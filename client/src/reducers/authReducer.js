@@ -1,10 +1,9 @@
 import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT_SUCCESS, REGISTER_SUCCESS, REGISTER_FAIL }  from '../actions/types';
-const isEmpty = require('is-empty');
 
 const initialState = {
-    token: localStorage.getItem('token');
+    token: localStorage.getItem('token'),
     isAuthenticated: false,
-    user: null
+    user: null,
     isLoading: false
 };
 
@@ -39,7 +38,7 @@ export default function(state = initialState, action) {
                 ...state,
                 token: null,
                 user: null,
-                isAuthenticated: false
+                isAuthenticated: false,
                 isLoading: false
             }
         default:

@@ -2,7 +2,7 @@ const router = require('express').Router();
 const Ticket = require('../models/ticket.model')
 const auth = require('../middleware/auth');
 
-router.get('/', auth, async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         let tickets = await Ticket.find();
         res.json(tickets);
@@ -11,9 +11,8 @@ router.get('/', auth, async (req, res) => {
     }
 });
 
-router.post('/create', auth, async (req, res) => {
+router.post('/create', async (req, res) => {
     const data = req.body;
-    console.log(req.body);
     const newTicket = new Ticket(data);
 
     try {
@@ -22,6 +21,12 @@ router.post('/create', auth, async (req, res) => {
     } catch(e) {
         console.log(e);
     }
+});
+
+router.post('/close/:id', async (req, res) => {
+    Ticket.findById(req.params.id)
+        .then(ticket => ticket.remove().then(() => res.json({ success: true })))
+        .catch(err => res.status(404).json({ success: false }));
 });
 
 module.exports = router;

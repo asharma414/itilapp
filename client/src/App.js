@@ -12,10 +12,6 @@ import './App.css';
 import NewTicket from './components/newticket';
 
 function App() {
-  componentDidMount() {
-    store.dispatch(loadUser());
-  }
-
   return (
     <Provider store={store}>
       <div className='container'>

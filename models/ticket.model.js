@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const ticketSchema = new mongoose.Schema({
     title: String,
     description: String,
-    status: String,
+    status: {type: String, default: 'New' },
+    open: { type: Boolean, default: true },
     author: {
         id : {
             type: mongoose.Schema.Types.ObjectId,

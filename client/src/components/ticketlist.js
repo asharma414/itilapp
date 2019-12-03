@@ -4,6 +4,11 @@ import { getTickets } from '../actions/ticketActions';
 import PropTypes from 'prop-types';
 
 class TicketList extends Component {
+    static propTypes = {
+        getTickets: PropTypes.func.isRequired,
+        ticket: PropTypes.object.isRequired,
+        //isAuthenticated: PropTypes.bool
+    };
 
     componentDidMount() {
         this.props.getTickets();
@@ -26,8 +31,8 @@ class TicketList extends Component {
                     <tr key={ticket._id}>
                         <td>{ticket.title}</td>
                         <td>{ticket.description}</td>
-                        <td>{ticket.createdAt.substring(0,19)}</td>
-                        <td>{ticket.updatedAt.substring(0,19)}</td>
+                        <td>{ticket.createdAt}</td>
+                        <td>{ticket.updatedAt}</td>
                     </tr>
                 ))}
                 </tbody>
@@ -36,13 +41,9 @@ class TicketList extends Component {
     }
 }
 
-TicketList.propTypes = {
-   getTickets: PropTypes.func.isRequired,
-   ticket: PropTypes.object.isRequired 
-}
-
 const mapStateToProps = (state) => ({
-    ticket: state.ticket
+    ticket: state.ticket,
+    //isAuthenticated: state.auth.isAuthenticated
 });
 
 export default connect(mapStateToProps, { getTickets })(TicketList)

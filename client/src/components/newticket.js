@@ -1,11 +1,16 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { newTicket } from '../actions/ticketActions';
 import { Form, Button } from 'react-bootstrap';
 
-export default class NewTicket extends Component {
-    state = {
-        redirect: false,
-        title: '',
-        description: ''
+class NewTicket extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            redirect: false,
+            title: '',
+            description: ''
+        }
     }
 
     onChange = (e) => {
@@ -13,15 +18,13 @@ export default class NewTicket extends Component {
     }
     onSubmit = async (e) => {
         e.preventDefault();
-        const newTicket = {
-            title: this.state.title,
-            description: this.state.description
-        }
-        try{
-            const response = await fetch('/tickets/create', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(newTicket)});
+        if (this.state.title.length > 0 && this.state.description.length > 0){
+            const newTicket = {
+                title: this.state.title,
+                description: this.state.description
+            }
+            await this.props.newTicket(newTicket);
             this.props.history.push('/tickets');
-        } catch(err) {
-            console.log(err);
         }
     }
 
@@ -43,3 +46,5 @@ export default class NewTicket extends Component {
         )
     }
 }
+
+export default connect(null, { newTicket })(NewTicket)
