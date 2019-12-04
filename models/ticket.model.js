@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 
 const ticketSchema = new mongoose.Schema({
-    title: String,
-    description: String,
-    status: {type: String, default: 'New' },
+    title: { type: String, required: true},
+    description: { type: String, required: true },
+    customer: { name: String, contact: String },
+    status: { type: String, default: 'New' },
     open: { type: Boolean, default: true },
     author: {
         id : {

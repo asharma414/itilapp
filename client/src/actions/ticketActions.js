@@ -15,7 +15,22 @@ export const getTickets = () => dispatch => {
         )
         .catch(err => 
             dispatch(returnErrors(err.response.data, err.response.status))
-            );
+        );
+};
+
+export const getTicket = id => dispatch => {
+    dispatch(setItemsLoading());
+    axios
+        .get(`/tickets/${id}`)
+        .then(res => 
+            dispatch({
+                type: GET_TICKETS,
+                payload: res.data
+            })
+        )
+        .catch(err =>
+            dispatch(returnErrors(err.response.data, err.response.status))
+        );
 };
 
 export const newTicket = ticket => dispatch => {

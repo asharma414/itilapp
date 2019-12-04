@@ -7,6 +7,7 @@ import Navigation from './components/navbar';
 import Register from './components/auth/register'
 import Login from './components/auth/login';
 import NewTicket from './components/newticket';
+import TicketPage from './components/ticketpage';
 import PrivateRoute  from './components/protected-route/privateroute';
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
@@ -46,7 +47,7 @@ function App() {
               <PrivateRoute exact path='/tickets' component={TicketList} />
           </Switch>
           <Route path='/tickets/create' exact component={NewTicket} />
-         
+          <Route path='/tickets/:id' exact component={TicketPage} />
         </Router>
       </div>
     </Provider>

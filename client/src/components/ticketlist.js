@@ -1,12 +1,16 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getTickets } from '../actions/ticketActions';
-import { logoutUser } from "../actions/authActions";
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 
 class TicketList extends Component {
     componentDidMount() {
         this.props.getTickets();
+    }
+
+    showDetails = (path) => {
+        this.props.history.push(path);
     }
 
     render() {
@@ -27,18 +31,19 @@ class TicketList extends Component {
                     </thead>
                     <tbody>
                     {tickets.map(ticket => (
-                        <tr key={ticket._id}>
-                            <td>{ticket.title}</td>
-                            <td>{ticket.description}</td>
-                            <td>{ticket.status}</td>
-                            <td>{(ticket.open === true) ? 'Open' : 'Closed'}</td>
-                            <td>{ticket.author.name}</td>
-                            <td>{ticket.createdAt.substring(0,19)}</td>
-                            <td>{ticket.updatedAt.substring(0,19)}</td>
+                        <tr key={ticket._id} onClick={() => this.showDetails(`/tickets/${ticket._id}`)}>
+                                <td>{ticket.title}</td>
+                                <td>{ticket.description}</td>
+                                <td>{ticket.status}</td>
+                                <td>{(ticket.open === true) ? 'Open' : 'Closed'}</td>
+                                <td>{ticket.author.name}</td>
+                                <td>{ticket.createdAt.substring(0,19)}</td>
+                                <td>{ticket.updatedAt.substring(0,19)}</td>
                         </tr>
                     ))}
                     </tbody>
                 </table>
+                {this.onClick}
             </div>
         );
     }
@@ -47,10 +52,10 @@ class TicketList extends Component {
 TicketList.propTypes = {
     getTickets: PropTypes.func.isRequired,
     ticket: PropTypes.object.isRequired
-}
+};
 
 const mapStateToProps = (state) => ({
-    ticket: state.ticket,
+    ticket: state.ticket
 });
 
-export default connect(mapStateToProps, { getTickets })(TicketList)
+export default connect(mapStateToProps, { getTickets })(withRouter(TicketList))
