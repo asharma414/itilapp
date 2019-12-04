@@ -4,6 +4,7 @@ const cors = require('cors');
 const app = express();
 const db = require('../keys').mongoURI;
 const port = process.env.port || 5000;
+const passport = require('passport');
 const userRoutes = require('./routes/users');
 const ticketRoutes = require('./routes/tickets');
 
@@ -13,6 +14,12 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use('/users', userRoutes);
 app.use('/tickets', ticketRoutes);
+
+// Passport middleware
+app.use(passport.initialize());
+// Passport config
+require('./passport')(passport);
+
 mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => console.log('MongoDB successfully connected'))
     .catch(err => console.log(err));

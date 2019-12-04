@@ -2,7 +2,7 @@ const keys = require('../../keys');
 const jwt = require('jsonwebtoken');
 
 function auth(req, res, next) {
-  const token = req.header('x-auth-token');
+  const token = req.header('Authorization');
 
   // Check for token
   if (!token)

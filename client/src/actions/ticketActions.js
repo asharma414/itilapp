@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { GET_TICKETS, ADD_TICKET, CLOSE_TICKET, TICKETS_LOADING } from './types';
 import { returnErrors } from './errorActions';
-import { tokenConfig } from './authActions';
 
-export const getTickets = (getState) => dispatch => {
+
+export const getTickets = () => dispatch => {
     dispatch(setItemsLoading());
     axios
         .get('/tickets')
@@ -18,13 +18,12 @@ export const getTickets = (getState) => dispatch => {
             );
 };
 
-export const newTicket = ticket => (dispatch, getState) => {
+export const newTicket = ticket => dispatch => {
     axios
-        .post('/tickets/create', ticket, tokenConfig(getState))
+        .post('/tickets/create', ticket)
         .then(res => 
             dispatch({
-                type: ADD_TICKET,
-                payload: res.data
+                type: ADD_TICKET
             })
         )
         .catch(err => 
@@ -32,9 +31,9 @@ export const newTicket = ticket => (dispatch, getState) => {
         );
 };
 
-export const closeTicket = id => (dispatch, getState) => {
+export const closeTicket = id => dispatch  => {
     axios
-        .post(`/tickets/close/${id}`, tokenConfig(getState))
+        .post(`/tickets/close/${id}`)
         .then(res => 
             dispatch({
                 type: CLOSE_TICKET,

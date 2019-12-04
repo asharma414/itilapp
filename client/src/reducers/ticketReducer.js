@@ -20,8 +20,7 @@ export default function(state = initialState, action) {
             };
         case ADD_TICKET:
             return {
-                ...state,
-                tickets: [action.payload, ...state.tickets]
+                ...state
             };
         case TICKETS_LOADING:
             return {
