@@ -11,7 +11,7 @@ const ticketRoutes = require('./routes/tickets');
 app.use(cors());
 
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 app.use('/users', userRoutes);
 app.use('/tickets', ticketRoutes);
 
@@ -20,7 +20,7 @@ app.use(passport.initialize());
 // Passport config
 require('./passport')(passport);
 
-mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB successfully connected'))
     .catch(err => console.log(err));
 

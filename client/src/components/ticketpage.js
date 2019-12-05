@@ -4,10 +4,10 @@ import { getTicket } from '../actions/ticketActions';
 import PropTypes from 'prop-types';
 import { Form, Button } from 'react-bootstrap';
 
+
 class TicketPage extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {}
+    state = {
+        errors: {}
     }
 
     componentDidMount() {
@@ -15,27 +15,38 @@ class TicketPage extends Component {
          this.props.getTicket(id)
     }
 
+
     onChange = (e) => {
         this.setState({ [e.target.id] : e.target.value })
     }
 
+    onSubmit = async (e) => {
+        
+    }
+
     render() {
-        // const details = this.props.ticket.tickets;
-        // console.log(details)
-        // this.state.title = details.title;
-        // this.state.description = details.description;
-        // this.state.customer = details.customer;
-        // this.state.author = details.author;
-        // this.state.comments = details.comments;
+        const details = this.props.ticket.tickets
         return (
             <Form>
             <Form.Group controlId="title">
                 <Form.Label>Title</Form.Label>
-                <Form.Control type="text" onChange={this.onChange} value={this.state.title} placeholder="Enter ticket title" />
+                <Form.Control type="text" value={details.title} />
             </Form.Group>
             <Form.Group controlId="description">
                 <Form.Label>Description</Form.Label>
-                <Form.Control as='textarea' onChange={this.onChange} value={this.state.description} placeholder="Enter ticket description" />
+                <Form.Control as='textarea' defaultValue={details.description} onChange={this.onChange} placeholder="Enter ticket description" />
+            </Form.Group>
+            <Form.Group controlId="customerName">
+                <Form.Label>Customer Name</Form.Label>
+                <Form.Control type="text" defaultValue={((details || {}).customer || {}).name} onChange={this.onChange} />
+            </Form.Group>
+            <Form.Group controlId="customerContact">
+                <Form.Label>Customer Contact</Form.Label>
+                <Form.Control type="text" defaultValue={((details || {}).customer || {}).contact} onChange={this.onChange} />
+            </Form.Group>
+            <Form.Group controlId="author">
+                <Form.Label>Title</Form.Label>
+                <Form.Control type="text" value={((details || {}).author || {}).name}  />
             </Form.Group>
             <Button variant="primary" type="submit">Submit</Button>
             </Form>

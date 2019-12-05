@@ -32,11 +32,16 @@ router.get('/:id', auth, async(req, res) => {
         .catch(err => res.status(404).json({ success: false }));
 });
 
-//closing ticket
-router.post('/close/:id', auth, async (req, res) => {
-    Ticket.findById(req.params.id)
-        .then(ticket => ticket.remove().then(() => res.json({ success: true })))
-        .catch(err => res.status(404).json({ success: false }));
+//update ticket
+router.put('/:id', (req, res) => {
+    console.log(req.body)
+    Ticket.findOneAndUpdate({ _id: req.params.id }, { $set: req.body }, { useFindAndModify: false }, (err, updatedTicket) =>{
+        if(err){
+            res.status(404).json({success: false})
+        } else {
+            res.json('ticket updated');
+        }
+    });
 });
 
 module.exports = router;
