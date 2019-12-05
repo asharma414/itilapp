@@ -9,7 +9,10 @@ class NewTicket extends Component {
         super();
         this.state = {
             title: '',
+            status: '',
             description: '',
+            customerName: '',
+            customerContact: ''
         }
     }
 
@@ -24,6 +27,11 @@ class NewTicket extends Component {
             const newTicket = {
                 title: this.state.title,
                 description: this.state.description,
+                status: this.state.status,
+                customer: {
+                    name: this.state.customerName,
+                    contact: this.state.customerContact
+                },
                 author: {
                     id: user.id,
                     name: user.name
@@ -37,15 +45,33 @@ class NewTicket extends Component {
     render() {
         return (
             <Form onSubmit={this.onSubmit}>
-            <Form.Group controlId="title">
+            <Form.Group controlId='title'>
                 <Form.Label>Title</Form.Label>
-                <Form.Control type="text" onChange={this.onChange} value={this.state.title} placeholder="Enter ticket title" />
+                <Form.Control type='text' onChange={this.onChange} value={this.state.title} placeholder="Enter ticket title" />
             </Form.Group>
-            <Form.Group controlId="description">
+            <Form.Group controlId='description'>
                 <Form.Label>Description</Form.Label>
                 <Form.Control as='textarea' onChange={this.onChange} value={this.state.description} placeholder="Enter ticket description" />
             </Form.Group>
-            <Button variant="primary" type="submit">
+            <Form.Group controlId='status'>
+                <Form.Label>Status</Form.Label>
+                <Form.Control as='select' onChange={this.onChange}>
+                    <option>New</option>
+                    <option>Awaiting Customer Feedback</option>
+                    <option>In Progress</option>
+                    <option>Cancelled</option>
+                    <option>Resolved</option>
+            </Form.Control>
+            </Form.Group>
+            <Form.Group controlId='customerName'>
+                <Form.Label>Customer Name</Form.Label>
+                <Form.Control type='text' onChange={this.onChange} value={this.state.customerName} placeholder="Enter Customer's Name" />
+            </Form.Group>
+            <Form.Group controlId='customerContact'>
+                <Form.Label>Customer Contact</Form.Label>
+                <Form.Control type='text' onChange={this.onChange} value={this.state.customerContact} placeholder="Enter Customer's Contact Info" />
+            </Form.Group>
+            <Button variant='primary' type='submit'>
                 Submit
             </Button>
             </Form>

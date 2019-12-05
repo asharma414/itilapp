@@ -46,8 +46,8 @@ function App() {
           <Switch>
               <PrivateRoute exact path='/tickets' component={TicketList} />
           </Switch>
-          <Route path='/tickets/create' exact component={NewTicket} />
           <Route path='/tickets/:id' exact component={TicketPage} />
+          <Route path='/new' exact component={NewTicket} />
         </Router>
       </div>
     </Provider>

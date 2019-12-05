@@ -33,8 +33,7 @@ router.get('/:id', auth, async(req, res) => {
 });
 
 //update ticket
-router.put('/:id', (req, res) => {
-    console.log(req.body)
+router.patch('/:id', auth, (req, res) => {
     Ticket.findOneAndUpdate({ _id: req.params.id }, { $set: req.body }, { useFindAndModify: false }, (err, updatedTicket) =>{
         if(err){
             res.status(404).json({success: false})

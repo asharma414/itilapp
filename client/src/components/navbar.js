@@ -20,7 +20,7 @@ class Navigation extends Component {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
                     <Nav.Link className={ isAuthenticated === true ? '' : 'd-none'} href="/tickets">Home</Nav.Link>
-                    <Nav.Link className={ isAuthenticated === true ? '' : 'd-none'} href="/tickets/create">New Ticket</Nav.Link>
+                    <Nav.Link className={ isAuthenticated === true ? '' : 'd-none'} href="/new">New Ticket</Nav.Link>
                     <Nav.Link className={ isAuthenticated === true ? '' : 'd-none'} href='' onClick={this.onLogoutClick}>Logout</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_TICKETS, ADD_TICKET, CLOSE_TICKET, TICKETS_LOADING } from './types';
+import { GET_TICKETS, ADD_TICKET, UPDATE_TICKET, TICKETS_LOADING } from './types';
 import { returnErrors } from './errorActions';
 
 
@@ -18,21 +18,6 @@ export const getTickets = () => dispatch => {
         );
 };
 
-export const getTicket = id => dispatch => {
-    dispatch(setItemsLoading());
-    axios
-        .get(`/tickets/${id}`)
-        .then(res => 
-            dispatch({
-                type: GET_TICKETS,
-                payload: res.data
-            })
-        )
-        .catch(err =>
-            dispatch(returnErrors(err.response.data, err.response.status))
-        );
-};
-
 export const newTicket = ticket => dispatch => {
     axios
         .post('/tickets/create', ticket)
@@ -46,13 +31,12 @@ export const newTicket = ticket => dispatch => {
         );
 };
 
-export const closeTicket = id => dispatch  => {
+export const updateTicket = (id, data) => dispatch  => {
     axios
-        .post(`/tickets/close/${id}`)
+        .patch(`/tickets/${id}`, data)
         .then(res => 
             dispatch({
-                type: CLOSE_TICKET,
-                payload: id
+                type: UPDATE_TICKET
             })
         )
         .catch(err => 

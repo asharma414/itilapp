@@ -1,4 +1,4 @@
-import { CLOSE_TICKET, ADD_TICKET, GET_TICKETS, TICKETS_LOADING } from '../actions/types';
+import { UPDATE_TICKET, ADD_TICKET, GET_TICKETS, TICKETS_LOADING } from '../actions/types';
 
 const initialState = {
     tickets: [],
@@ -13,7 +13,7 @@ export default function(state = initialState, action) {
                 tickets: action.payload,
                 loading: false
             };
-        case CLOSE_TICKET:
+        case UPDATE_TICKET:
             return {
                 ...state,
                 tickets: state.tickets.filter(ticket => ticket._id !== action.payload)

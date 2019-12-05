@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getTickets } from '../actions/ticketActions';
 import PropTypes from 'prop-types';
+import { Table } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 
 class TicketList extends Component {
@@ -17,7 +18,7 @@ class TicketList extends Component {
         const { tickets } = this.props.ticket;
         return (
             <div>
-                <table>
+                <Table striped bordered hover>
                     <thead>
                         <tr>
                             <td>Title</td>
@@ -42,8 +43,7 @@ class TicketList extends Component {
                         </tr>
                     ))}
                     </tbody>
-                </table>
-                {this.onClick}
+                </Table>
             </div>
         );
     }
