@@ -27,7 +27,7 @@ router.post('/create', auth, async (req, res) => {
 
 //ticket show page
 router.get('/:id', auth, (req, res) => {
-    Ticket.findById(req.params.id).populate('comments').exec()
+    Ticket.findById(req.params.id).populate({ path: 'comments', options: { sort: { 'createdAt': -1 } } }).exec()
         .then(ticket => res.json(ticket))
         .catch(err => res.status(404).json({ success: false }));
 });

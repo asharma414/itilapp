@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { newTicket } from '../actions/ticketActions';
 import PropTypes from 'prop-types';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Row, Col } from 'react-bootstrap';
 
 class NewTicket extends Component {
     state = {
@@ -17,7 +17,7 @@ class NewTicket extends Component {
         this.setState({ [e.target.id] : e.target.value })
     }
 
-    onSubmit = async (e) => {
+    ticketSubmit = async (e) => {
         const { user } = this.props.auth;
         e.preventDefault();
         if (this.state.title.length > 0 && this.state.description.length > 0){
@@ -41,37 +41,41 @@ class NewTicket extends Component {
 
     render() {
         return (
-            <Form onSubmit={this.onSubmit}>
-            <Form.Group controlId='title'>
-                <Form.Label>Title</Form.Label>
-                <Form.Control type='text' onChange={this.onChange} value={this.state.title} placeholder="Enter ticket title" />
-            </Form.Group>
-            <Form.Group controlId='description'>
+            <Form className='my-4' onSubmit={this.ticketSubmit}>
+            <Row>
+                <Col>
+                    <Form.Group controlId="customerName">
+                        <Form.Label>Customer Name</Form.Label>
+                        <Form.Control type='text' onChange={this.onChange} value={this.state.customerName} placeholder="Enter Customer's Name" />
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group controlId="customerContact">
+                        <Form.Label>Customer Contact</Form.Label>
+                        <Form.Control type='text' onChange={this.onChange} value={this.state.customerContact} placeholder="Enter Customer's Contact Info" />
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Form.Group controlId='status'>
+                        <Form.Label>Status</Form.Label>
+                        <Form.Control as='select' value={this.state.newStatus} onChange={this.onChange}>
+                            <option>New</option>
+                            <option>Awaiting Customer Feedback</option>
+                            <option>In Progress</option>
+                            <option>Cancelled</option>
+                            <option>Resolved</option>
+                        </Form.Control>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Form.Group controlId="description">
                 <Form.Label>Description</Form.Label>
-                <Form.Control as='textarea' onChange={this.onChange} value={this.state.description} placeholder="Enter ticket description" />
+                <Form.Control as='textarea' value={this.state.description} onChange={this.onChange} placeholder="Enter ticket description" />
             </Form.Group>
-            <Form.Group controlId='status'>
-                <Form.Label>Status</Form.Label>
-                <Form.Control as='select' value={this.state.status} onChange={this.onChange}>
-                    <option>New</option>
-                    <option>Awaiting Customer Feedback</option>
-                    <option>In Progress</option>
-                    <option>Cancelled</option>
-                    <option>Resolved</option>
-            </Form.Control>
-            </Form.Group>
-            <Form.Group controlId='customerName'>
-                <Form.Label>Customer Name</Form.Label>
-                <Form.Control type='text' onChange={this.onChange} value={this.state.customerName} placeholder="Enter Customer's Name" />
-            </Form.Group>
-            <Form.Group controlId='customerContact'>
-                <Form.Label>Customer Contact</Form.Label>
-                <Form.Control type='text' onChange={this.onChange} value={this.state.customerContact} placeholder="Enter Customer's Contact Info" />
-            </Form.Group>
-            <Button variant='primary' type='submit'>
-                Submit
-            </Button>
-            </Form>
+            <Button variant="primary" type="submit">Submit</Button>
+        </Form>
         )
     }
 }

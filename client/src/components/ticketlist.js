@@ -4,6 +4,7 @@ import { getTickets } from '../actions/ticketActions';
 import PropTypes from 'prop-types';
 import { Table } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
+import LoadingScreen from './loadingscreen';
 
 class TicketList extends Component {
     componentDidMount() {
@@ -19,12 +20,14 @@ class TicketList extends Component {
         const { loading } = this.props.ticket;
         if (loading === true) {
             return (
-                <div>Loading...</div>
+                <div className='container'>
+                    <LoadingScreen />
+                </div>
             )
         } else {
             return (
                 <div>
-                    <Table striped bordered hover>
+                    <Table className='my-4' striped bordered hover>
                         <thead>
                             <tr>
                                 <td>Title</td>
@@ -38,7 +41,7 @@ class TicketList extends Component {
                         </thead>
                         <tbody>
                         {tickets.map(ticket => (
-                            <tr key={ticket._id} onClick={() => this.showDetails(`/tickets/${ticket._id}`)}>
+                            <tr className='ticket' key={ticket._id} onClick={() => this.showDetails(`/tickets/${ticket._id}`)}>
                                     <td>{ticket.title}</td>
                                     <td>{ticket.description}</td>
                                     <td>{ticket.status}</td>
