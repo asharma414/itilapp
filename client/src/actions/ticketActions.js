@@ -33,7 +33,7 @@ export const newTicket = ticket => dispatch => {
 
 export const updateTicket = (id, data) => dispatch  => {
     axios
-        .patch(`/tickets/${id}`, data)
+        .put(`/tickets/${id}`, data)
         .then(res => 
             dispatch({
                 type: UPDATE_TICKET

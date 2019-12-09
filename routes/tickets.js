@@ -26,14 +26,14 @@ router.post('/create', auth, async (req, res) => {
 });
 
 //ticket show page
-router.get('/:id', auth, async(req, res) => {
-    Ticket.findById(req.params.id)
+router.get('/:id', auth, (req, res) => {
+    Ticket.findById(req.params.id).populate('comments').exec()
         .then(ticket => res.json(ticket))
         .catch(err => res.status(404).json({ success: false }));
 });
 
 //update ticket
-router.patch('/:id', auth, (req, res) => {
+router.put('/:id', auth, (req, res) => {
     Ticket.findOneAndUpdate({ _id: req.params.id }, { $set: req.body }, { useFindAndModify: false }, (err, updatedTicket) =>{
         if(err){
             res.status(404).json({success: false})

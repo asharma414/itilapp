@@ -4,4 +4,5 @@ export const SET_CURRENT_USER = 'SET_CURRENT_USER';
 export const GET_TICKETS = 'GET_TICKETS';
 export const ADD_TICKET = 'ADD_TICKET';
 export const UPDATE_TICKET = 'UPDATE_TICKET';
-export const TICKETS_LOADING = 'TICKETS_LOADING'
+export const TICKETS_LOADING = 'TICKETS_LOADING';
+export const ADD_COMMENT = 'ADD_COMMENT';

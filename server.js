@@ -7,12 +7,14 @@ const port = process.env.port || 5000;
 const passport = require('passport');
 const userRoutes = require('./routes/users');
 const ticketRoutes = require('./routes/tickets');
+const commentRoutes = require('./routes/comments');
 
 app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/users', userRoutes);
+app.use('/tickets/:id/comments', commentRoutes);
 app.use('/tickets', ticketRoutes);
 
 // Passport middleware

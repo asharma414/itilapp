@@ -5,15 +5,12 @@ import PropTypes from 'prop-types';
 import { Form, Button } from 'react-bootstrap';
 
 class NewTicket extends Component {
-    constructor() {
-        super();
-        this.state = {
-            title: '',
-            status: '',
-            description: '',
-            customerName: '',
-            customerContact: ''
-        }
+    state = {
+        title: '',
+        status: 'New',
+        description: '',
+        customerName: '',
+        customerContact: ''
     }
 
     onChange = (e) => {
@@ -55,7 +52,7 @@ class NewTicket extends Component {
             </Form.Group>
             <Form.Group controlId='status'>
                 <Form.Label>Status</Form.Label>
-                <Form.Control as='select' onChange={this.onChange}>
+                <Form.Control as='select' value={this.state.status} onChange={this.onChange}>
                     <option>New</option>
                     <option>Awaiting Customer Feedback</option>
                     <option>In Progress</option>
