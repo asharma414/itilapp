@@ -4,8 +4,9 @@ const auth = require('../middleware/auth');
 
 //get ticket list
 router.get('/', auth, async (req, res) => {
-    if(req.body.term) {
-        const regex = new RegExp(escapeRegex(req.body.term), 'gi');
+    console.log(req.query)
+    if(req.query.term) {
+        const regex = new RegExp(escapeRegex(req.query.term), 'gi');
         try {
             let tickets = await Ticket.find({
                 $or : [
@@ -14,7 +15,7 @@ router.get('/', auth, async (req, res) => {
                 ]
             })
             if (tickets.length < 1) {
-                res.json('No tickets found')
+                res.json([])
             } else {
             res.json(tickets);
             }

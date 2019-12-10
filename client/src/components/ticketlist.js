@@ -8,7 +8,7 @@ import LoadingScreen from './loadingscreen';
 
 class TicketList extends Component {
     componentDidMount() {
-        this.props.getTickets();
+        this.props.getTickets('');
     }
 
     showDetails = (path) => {
@@ -22,6 +22,12 @@ class TicketList extends Component {
             return (
                 <div className='container'>
                     <LoadingScreen />
+                </div>
+            )
+        } else if (tickets.length < 1) {
+            return (
+                <div>
+                    No results found
                 </div>
             )
         } else {

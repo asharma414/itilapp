@@ -3,10 +3,14 @@ import { GET_TICKETS, ADD_TICKET, UPDATE_TICKET, TICKETS_LOADING } from './types
 import { returnErrors } from './errorActions';
 
 
-export const getTickets = () => dispatch => {
+export const getTickets = term => dispatch => {
     dispatch(setItemsLoading());
     axios
-        .get('/tickets')
+        .get('/tickets', {
+            params: {
+                term: term
+            }
+        })
         .then(res =>
             dispatch({
                 type: GET_TICKETS,
