@@ -4,11 +4,30 @@ const auth = require('../middleware/auth');
 
 //get ticket list
 router.get('/', auth, async (req, res) => {
-    try {
-        let tickets = await Ticket.find();
-        res.json(tickets);
-    } catch(e) {
-        console.log(e);
+    if(req.body.term) {
+        const regex = new RegExp(escapeRegex(req.body.term), 'gi');
+        try {
+            let tickets = await Ticket.find({
+                $or : [
+                    { title: { $regex: regex } },
+                    { description: { $regex: regex } }
+                ]
+            })
+            if (tickets.length < 1) {
+                res.json('No tickets found')
+            } else {
+            res.json(tickets);
+            }
+        } catch(e) {
+            console.log(e);
+        }
+    } else {
+        try {
+            let tickets = await Ticket.find({})
+            res.json(tickets);
+        } catch(e) {
+            console.log(e);
+        }
     }
 });
 
@@ -36,11 +55,16 @@ router.get('/:id', auth, (req, res) => {
 router.put('/:id', auth, (req, res) => {
     Ticket.findOneAndUpdate({ _id: req.params.id }, { $set: req.body }, { useFindAndModify: false }, (err, updatedTicket) =>{
         if(err){
-            res.status(404).json({success: false})
+            res.status(404).json({ success: false })
         } else {
             res.json('ticket updated');
         }
     });
 });
+
+//function converts text into regex that can be used to fuzzy
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+};
 
 module.exports = router;

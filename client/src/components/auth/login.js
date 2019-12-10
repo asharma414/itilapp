@@ -49,23 +49,23 @@ class Login extends Component {
     render() {
         const { errors } = this.state;
         return (
-            <div>
-              <p>Don't have an account? <Link to='/register'>Register</Link></p>
-              <Form onSubmit={this.onSubmit}>
-              <Form.Group controlId='email'>
-                  <Form.Label>Email address</Form.Label>
-                  <span className='text-danger'>     {errors.email}{errors.emailnotfound}</span>
-                  <Form.Control value={this.state.email} onChange={this.onChange} type='email' error={errors.email} placeholder="Enter email" />
-              </Form.Group>
-              <Form.Group controlId="password">
-                  <Form.Label>Password</Form.Label>
-                  <span className='text-danger'>     {errors.password}{errors.passwordincorrect}</span>
-                  <Form.Control onChange={this.onChange} type='password' error={errors.password} placeholder="Password" />
-              </Form.Group>
-              <Button variant="primary" type="submit">
-                Submit
-              </Button>
-            </Form>
+            <div className='container mt-4'>
+              <p className='text-center'>Don't have an account? <Link to='/register'>Register</Link></p>
+              <div className='d-flex justify-content-center'>
+                  <Form onSubmit={this.onSubmit}>
+                  <Form.Group controlId='email'>
+                      <Form.Label>Email address</Form.Label>
+                      <span className='text-danger'>     {errors.email}{errors.emailnotfound}</span>
+                      <Form.Control value={this.state.email} onChange={this.onChange} type='email' error={errors.email} placeholder="Enter email" />
+                  </Form.Group>
+                  <Form.Group controlId="password">
+                      <Form.Label>Password</Form.Label>
+                      <span className='text-danger'>     {errors.password}{errors.passwordincorrect}</span>
+                      <Form.Control onChange={this.onChange} type='password' error={errors.password} placeholder="Password" />
+                  </Form.Group>
+                  <Button variant="primary" type="submit">Login</Button>
+                </Form>
+              </div>
           </div>
         )
     }

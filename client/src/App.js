@@ -45,9 +45,11 @@ function App() {
           <Route path='/register' exact component={Register} />
           <Switch>
               <PrivateRoute exact path='/tickets' component={TicketList} />
+              <PrivateRoute exact path='/tickets/:id' component={TicketPage} />
+              <PrivateRoute exact path='/new' component={NewTicket} />
           </Switch>
-          <Route path='/tickets/:id' exact component={TicketPage} />
-          <Route path='/new' exact component={NewTicket} />
+          {/* <Route path='/tickets/:id' exact component={TicketPage} />
+          <Route path='/new' exact component={NewTicket} /> */}
         </Router>
       </div>
     </Provider>

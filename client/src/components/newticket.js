@@ -35,24 +35,28 @@ class NewTicket extends Component {
                 }
             }
             await this.props.newTicket(newTicket);
-            this.props.history.push('/tickets');
+            //this.props.history.push('/tickets');
         }
     }
 
     render() {
         return (
             <Form className='my-4' onSubmit={this.ticketSubmit}>
+                <Form.Group controlId="title">
+                    <Form.Label>Title</Form.Label>
+                    <Form.Control type='text' onChange={this.onChange} value={this.state.title} placeholder="Ticket Title" />
+                </Form.Group>
             <Row>
                 <Col>
                     <Form.Group controlId="customerName">
                         <Form.Label>Customer Name</Form.Label>
-                        <Form.Control type='text' onChange={this.onChange} value={this.state.customerName} placeholder="Enter Customer's Name" />
+                        <Form.Control type='text' onChange={this.onChange} value={this.state.customerName} placeholder="Customer's Name" />
                     </Form.Group>
                 </Col>
                 <Col>
                     <Form.Group controlId="customerContact">
                         <Form.Label>Customer Contact</Form.Label>
-                        <Form.Control type='text' onChange={this.onChange} value={this.state.customerContact} placeholder="Enter Customer's Contact Info" />
+                        <Form.Control type='text' onChange={this.onChange} value={this.state.customerContact} placeholder="Customer's Contact Info" />
                     </Form.Group>
                 </Col>
             </Row>
@@ -72,7 +76,7 @@ class NewTicket extends Component {
             </Row>
             <Form.Group controlId="description">
                 <Form.Label>Description</Form.Label>
-                <Form.Control as='textarea' value={this.state.description} onChange={this.onChange} placeholder="Enter ticket description" />
+                <Form.Control as='textarea' value={this.state.description} onChange={this.onChange} placeholder="Ticket description" />
             </Form.Group>
             <Button variant="primary" type="submit">Submit</Button>
         </Form>

@@ -26,8 +26,8 @@ class TicketList extends Component {
             )
         } else {
             return (
-                <div>
-                    <Table className='my-4' striped bordered hover>
+                <div className='container'>
+                    <Table className='my-4' striped bordered hover responsive='md'>
                         <thead>
                             <tr>
                                 <td>Title</td>
@@ -35,7 +35,7 @@ class TicketList extends Component {
                                 <td>Status</td>
                                 <td>Open?</td>
                                 <td>Author</td> 
-                                <td>Created Date</td>
+                                <td>Created</td>
                                 <td>Last Modified</td>
                             </tr>
                         </thead>

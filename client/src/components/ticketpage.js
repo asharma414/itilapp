@@ -31,8 +31,7 @@ class TicketPage extends Component {
         errors: {}
     }
 
-    componentDidMount() {
-        this.setState({ loading: true })
+    getTicket() {
         const { id } = this.props.match.params;
         axios
             .get(`/tickets/${id}`)
@@ -58,6 +57,14 @@ class TicketPage extends Component {
         );
     }
 
+    componentDidMount() {
+        if (this.props.errors) {
+            this.setState({ errors: this.props.errors })
+        }
+        this.getTicket();
+        this.setState({ loading: true })
+    }
+
     onChange = (e) => {
         this.setState({ [e.target.id] : e.target.value })
     }
@@ -74,7 +81,7 @@ class TicketPage extends Component {
             }
         }
         await this.props.addComment(id, newComment);
-        window.location.reload(false);
+        this.getTicket();
     }
 
     ticketSubmit = async (e) => {
@@ -96,7 +103,7 @@ class TicketPage extends Component {
             open: (this.state.newOpen === 'Open') ? true : false
         }
         await this.props.updateTicket(id, updatedTicket);
-        window.location.reload(false);
+        this.getTicket();
     }
 
     commentSubmit = (e) => {
@@ -113,15 +120,15 @@ class TicketPage extends Component {
             )
         } else {
             return (
-                <div>
-                    <Table className='my-4' bordered hover>
+                <div className='container'>
+                    <Table className='my-4' bordered hover responsive='md'>
                         <thead>
                             <tr>
                                 <td>Title</td>
                                 <td>Status</td>
                                 <td>Open?</td>
                                 <td>Author</td> 
-                                <td>Created Date</td>
+                                <td>Created</td>
                                 <td>Last Modified</td>
                             </tr>
                         </thead>
@@ -141,13 +148,13 @@ class TicketPage extends Component {
                             <Col>
                                 <Form.Group controlId="customerName">
                                     <Form.Label>Customer Name</Form.Label>
-                                    <Form.Control type='text' onChange={this.onChange} value={this.state.customerName} placeholder="Enter Customer's Name" />
+                                    <Form.Control type='text' onChange={this.onChange} value={this.state.customerName} placeholder="Customer's Name" />
                                 </Form.Group>
                             </Col>
                             <Col>
                                 <Form.Group controlId="customerContact">
                                     <Form.Label>Customer Contact</Form.Label>
-                                    <Form.Control type='text' onChange={this.onChange} value={this.state.customerContact} placeholder="Enter Customer's Contact Info" />
+                                    <Form.Control type='text' onChange={this.onChange} value={this.state.customerContact} placeholder="Customer's Contact Info" />
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -176,7 +183,7 @@ class TicketPage extends Component {
                         </Row>
                         <Form.Group controlId="description">
                             <Form.Label>Description</Form.Label>
-                            <Form.Control as='textarea' value={this.state.description} onChange={this.onChange} placeholder="Enter ticket description" />
+                            <Form.Control as='textarea' value={this.state.description} onChange={this.onChange} placeholder="Ticket description" />
                         </Form.Group>
                         <Button variant="primary" type="submit">Submit</Button>
                     </Form>
@@ -211,11 +218,13 @@ class TicketPage extends Component {
 TicketPage.propTypes = {
     updateTicket: PropTypes.func.isRequired,
     addComment: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired
+    auth: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => ({
-    auth: state.auth
+    auth: state.auth,
+    errors: state.errors
 });
 
 export default connect(mapStateToProps, { returnErrors, updateTicket, addComment })(TicketPage)

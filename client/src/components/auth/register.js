@@ -53,8 +53,9 @@ class Register extends Component {
     render() {
         const { errors } = this.state;
         return (
-          <div>
-              <p>Already have an account? <Link to='/login'>Login</Link></p>
+          <div className='container mt-4'>
+            <p className='text-center'>Already have an account? <Link to='/login'>Login</Link></p>
+            <div class='d-flex justify-content-center'>
               <Form onSubmit={this.onSubmit}>
               <Form.Group controlId='name'>
                   <Form.Label>Name</Form.Label>
@@ -76,8 +77,9 @@ class Register extends Component {
                   <span className='text-danger'>      {errors.password2}</span>
                   <Form.Control value={this.state.password2} onChange={this.onChange} type="password" error={errors.password2} placeholder="Password" />
               </Form.Group>
-              <Button variant="primary" type="submit" onSubmit={this.onSubmit}>Submit</Button>
-            </Form>
+              <Button variant="primary" type="submit" onSubmit={this.onSubmit}>Register</Button>
+              </Form>
+            </div>
           </div>
         )
     }
