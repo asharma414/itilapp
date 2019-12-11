@@ -4,7 +4,6 @@ const auth = require('../middleware/auth');
 
 //get ticket list
 router.get('/', auth, async (req, res) => {
-    console.log(req.query)
     if(req.query.term) {
         const regex = new RegExp(escapeRegex(req.query.term), 'gi');
         try {

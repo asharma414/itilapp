@@ -12,6 +12,14 @@ class Navigation extends Component {
         term: ''
     }
 
+    myTickets = async (e) => {
+        e.preventDefault();
+        console.log(this.props.auth)
+        const user = { name: this.props.auth.user.name }
+        await this.props.history.push('/tickets');
+        this.props.getTickets(user);
+    }
+
     onLogoutClick = e => {
         e.preventDefault();
         this.props.logoutUser();
@@ -41,6 +49,7 @@ class Navigation extends Component {
                     </Form>
                     <Nav.Link className={ isAuthenticated === true ? '' : 'd-none' } href='/tickets'>Home</Nav.Link>
                     <Nav.Link className={ isAuthenticated === true ? '' : 'd-none' } href='/new'>New Ticket</Nav.Link>
+                    <Nav.Link className={ isAuthenticated === true ? '' : 'd-none' } onClick={this.myTickets}>My Tickets</Nav.Link>
                     <Nav.Link className={ isAuthenticated === true ? '' : 'd-none' } href='' onClick={this.onLogoutClick}>Logout</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>

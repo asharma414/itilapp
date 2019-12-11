@@ -15,8 +15,7 @@ export default function(state = initialState, action) {
             };
         case UPDATE_TICKET:
             return {
-                ...state,
-                tickets: state.tickets.filter(ticket => ticket._id !== action.payload)
+                ...state
             };
         case ADD_TICKET:
             return {

@@ -88,5 +88,11 @@ const email = req.body.email;
   });
 });
 
+
+//profile page
+router.get('/:id', auth, (req, res) => {
+
+});
+
 module.exports = router;
    
