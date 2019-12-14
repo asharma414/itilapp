@@ -41,6 +41,7 @@ class TicketList extends Component {
                                 <td>Status</td>
                                 <td>Open?</td>
                                 <td>Author</td> 
+                                <td>Assigned To</td>
                                 <td>Created</td>
                                 <td>Last Modified</td>
                             </tr>
@@ -53,6 +54,7 @@ class TicketList extends Component {
                                     <td>{ticket.status}</td>
                                     <td>{(ticket.open === true) ? 'Open' : 'Closed'}</td>
                                     <td>{ticket.author.name}</td>
+                                    <td>{ticket.assignedTo.name}</td>
                                     <td>{ticket.createdAt.substring(0,19)}</td>
                                     <td>{ticket.updatedAt.substring(0,19)}</td>
                             </tr>

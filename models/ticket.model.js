@@ -13,6 +13,13 @@ const ticketSchema = new mongoose.Schema({
         },
         name: String
     },
+    assignedTo: {
+        id : {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        },
+        name: String
+    },
     comments: [
        {
           type: mongoose.Schema.Types.ObjectId,

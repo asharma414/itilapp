@@ -89,10 +89,19 @@ const email = req.body.email;
 });
 
 
-//profile page
-router.get('/:id', auth, (req, res) => {
-
+//user search
+router.get('/', auth, async (req, res) => {
+    try {
+        let users = await User.find({})
+        res.json(users);
+    } catch(e) {
+        console.log(e);
+    }
 });
+
+// function escapeRegex(text) {
+//   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+// };
 
 module.exports = router;
    

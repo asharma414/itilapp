@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { updateTicket } from '../actions/ticketActions';
 import { returnErrors } from '../actions/errorActions';
 import { addComment } from '../actions/commentActions';
+import { findUser } from '../actions/userActions';
 import PropTypes from 'prop-types';
 import LoadingScreen from './loadingscreen';
 import { Form, Button, Table, Row, Col } from 'react-bootstrap';
@@ -27,6 +28,7 @@ class TicketPage extends Component {
         comments:  [],
         loading: false,
         commentText: '',
+        assignedTo: '',
         commentToggle: false,
         errors: {}
     }
@@ -49,6 +51,7 @@ class TicketPage extends Component {
                     customerContact: ((res.data || {}).customer || {}).contact,
                     comments: res.data.comments,
                     author: ((res.data || {}).author || {}).name,
+                    assignedTo: ((res.data || {}).assignedTo || {}).name,
                     loading: false
                 })
             )
@@ -61,6 +64,7 @@ class TicketPage extends Component {
         if (this.props.errors) {
             this.setState({ errors: this.props.errors })
         }
+        this.props.findUser();
         this.getTicket();
         this.setState({ loading: true })
     }
@@ -86,24 +90,35 @@ class TicketPage extends Component {
 
     ticketSubmit = async (e) => {
         e.preventDefault();
-        const { id } = this.props.match.params;
-        if (this.state.newStatus !== this.state.status) {
-            this.commentPost(`Status is <i>${this.state.newStatus}</i> was <i>${this.state.status}</i>`)
+        const { users } = this.props.user;
+        let userArr = users.map(user => user.name);
+        if (userArr.includes(this.state.assignedTo)){
+            let assignedToIndex = userArr.indexOf(this.state.assignedTo)
+            const { id } = this.props.match.params;
+            if (this.state.newStatus !== this.state.status) {
+                this.commentPost(`Status is <i>${this.state.newStatus}</i> was <i>${this.state.status}</i>`)
+            }
+            if (this.state.newOpen !== this.state.open) {
+                this.commentPost(`State is <i>${this.state.newOpen}</i> was <i>${this.state.open}</i>`)
+            }
+            const updatedTicket = {
+                description: this.state.description,
+                customer: {
+                    name: this.state.customerName,
+                    contact: this.state.customerContact
+                },
+                status: this.state.newStatus,
+                open: (this.state.newOpen === 'Open') ? true : false,
+                assignedTo: {
+                    id: users[assignedToIndex]._id,
+                    name: this.state.assignedTo
+                }
+            }
+            await this.props.updateTicket(id, updatedTicket);
+            this.getTicket();
+        } else {
+            alert('Invalid assigned to user')
         }
-        if (this.state.newOpen !== this.state.open) {
-            this.commentPost(`State is <i>${this.state.newOpen}</i> was <i>${this.state.open}</i>`)
-        }
-        const updatedTicket = {
-            description: this.state.description,
-            customer: {
-                name: this.state.customerName,
-                contact: this.state.customerContact
-            },
-            status: this.state.newStatus,
-            open: (this.state.newOpen === 'Open') ? true : false
-        }
-        await this.props.updateTicket(id, updatedTicket);
-        this.getTicket();
     }
 
     commentSubmit = (e) => {
@@ -112,6 +127,7 @@ class TicketPage extends Component {
     }
 
     render() {
+        const { users } = this.props.user;
         if (this.state.loading === true) {
             return (
                 <div className='container'>
@@ -121,6 +137,12 @@ class TicketPage extends Component {
         } else {
             return (
                 <div className='container'>
+                <datalist id='datalist1'>
+                {
+                    users.map(user => (
+                        <option key={user._id} value={user.name}></option>
+                ))}
+                </datalist>
                     <Table className='my-4' bordered hover responsive='md'>
                         <thead>
                             <tr>
@@ -181,6 +203,10 @@ class TicketPage extends Component {
                                 </Form.Group>
                             </Col>
                         </Row>
+                        <Form.Group controlId="assignedTo">
+                            <Form.Label>Assigned To</Form.Label>
+                            <Form.Control  list='datalist1' type='text' value={this.state.assignedTo} onChange={this.onChange} />
+                        </Form.Group>
                         <Form.Group controlId="description">
                             <Form.Label>Description</Form.Label>
                             <Form.Control as='textarea' value={this.state.description} onChange={this.onChange} placeholder="Ticket description" />
@@ -219,12 +245,15 @@ TicketPage.propTypes = {
     updateTicket: PropTypes.func.isRequired,
     addComment: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
-    errors: PropTypes.object.isRequired
+    errors: PropTypes.object.isRequired,
+    findUser: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => ({
     auth: state.auth,
-    errors: state.errors
+    errors: state.errors,
+    user: state.user
 });
 
-export default connect(mapStateToProps, { returnErrors, updateTicket, addComment })(TicketPage)
+export default connect(mapStateToProps, { returnErrors, updateTicket, addComment, findUser })(TicketPage)
