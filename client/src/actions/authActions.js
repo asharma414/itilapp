@@ -5,10 +5,14 @@ import jwt_decode from "jwt-decode";
 import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING } from "./types";
 
 //Register user
-export const registerUser = (userData, history) => dispatch => {
+export const registerUser = (userData, history, clear) => dispatch => {
     axios
         .post('/users/register', userData)
-        .then(res => history.push('/login')) //redirect to login page after registration
+        .then(res => {
+            history.push('/login');
+            clear();
+        }
+        ) //redirect to login page after registration
         .catch(err => 
             dispatch({
                 type: GET_ERRORS,

@@ -2,19 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { loginUser } from '../../actions/authActions';
+import { clearErrors } from '../../actions/errorActions';
 import PropTypes from 'prop-types';
 import { Button, Form } from 'react-bootstrap';
 
 
 class Login extends Component {
-    constructor() {
-        super();
-        this.state = {
+        state = {
           email: '',
-          password: '',
-          errors: {}
+          password: ''
         };
-      }
 
       componentDidMount() {
         // If logged in and user navigates to Login page, should redirect them to dashboard
@@ -22,16 +19,13 @@ class Login extends Component {
           this.props.history.push('/tickets');
         }
       }
-
-      componentWillReceiveProps(nextProps) {
+      
+      static getDerivedStateFromProps(nextProps, prevState) {
         if (nextProps.auth.isAuthenticated) {
-          this.props.history.push('/tickets'); // push user to dashboard when they login
-        }
-        if (nextProps.errors) {
-          this.setState({
-            errors: nextProps.errors
-          });
-        }
+          nextProps.clearErrors();
+          nextProps.history.push('/tickets'); // push user to dashboard when they login
+        };
+        return null;
       }
 
     onChange = e => {
@@ -47,7 +41,7 @@ class Login extends Component {
       };
 
     render() {
-        const { errors } = this.state;
+        const { errors } = this.props;
         return (
             <div className='container mt-4'>
               <p className='text-center'>Don't have an account? <Link to='/register'>Register</Link></p>
@@ -56,12 +50,12 @@ class Login extends Component {
                   <Form.Group controlId='email'>
                       <Form.Label>Email address</Form.Label>
                       <span className='text-danger'>     {errors.email}{errors.emailnotfound}</span>
-                      <Form.Control value={this.state.email} onChange={this.onChange} type='email' error={errors.email} placeholder="Enter email" />
+                      <Form.Control value={this.state.email} onChange={this.onChange} type='email' error={errors.email} autoComplete='email' placeholder="Enter email" />
                   </Form.Group>
                   <Form.Group controlId="password">
                       <Form.Label>Password</Form.Label>
                       <span className='text-danger'>     {errors.password}{errors.passwordincorrect}</span>
-                      <Form.Control onChange={this.onChange} type='password' error={errors.password} placeholder="Password" />
+                      <Form.Control onChange={this.onChange} type='password' error={errors.password} autoComplete='current-password' placeholder="Password" />
                   </Form.Group>
                   <Button variant="primary" type="submit">Login</Button>
                 </Form>
@@ -74,7 +68,8 @@ class Login extends Component {
 Login.propTypes = {
   loginUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.object.isRequired,
+  clearErrors: PropTypes.func.isRequired
 };
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -82,5 +77,5 @@ const mapStateToProps = state => ({
 });
 export default connect(
   mapStateToProps,
-  { loginUser }
+  { clearErrors, loginUser }
 )(Login);
