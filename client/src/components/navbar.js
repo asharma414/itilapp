@@ -9,15 +9,14 @@ import PropTypes from 'prop-types';
 class Navigation extends Component {
 
     state = {
-        term: ''
+        term: '',
     }
 
     myTickets = async (e) => {
         e.preventDefault();
-        console.log(this.props.auth)
-        const user = { name: this.props.auth.user.name }
-        await this.props.history.push('/tickets');
-        this.props.getTickets(user);
+        const user = this.props.auth.user.name
+        await this.props.history.push('/mytickets');
+        this.props.getTickets('', user);
     }
 
     onLogoutClick = e => {
@@ -32,7 +31,7 @@ class Navigation extends Component {
     onSubmit = async (e) => { 
         e.preventDefault();
         await this.props.history.push('/tickets');
-        this.props.getTickets(this.state.term)
+        this.props.getTickets(this.state.term, '')
     }
 
     render() {
@@ -40,7 +39,7 @@ class Navigation extends Component {
         return (
             <Navbar bg='light' expand='lg'>
                 <Navbar.Brand href='/'>ITIL App</Navbar.Brand>
-                <Navbar.Toggle className={ isAuthenticated === true ? '' : 'd-none'} aria-controls='basic-navbar-nav' />
+                <Navbar.Toggle className={ isAuthenticated === true ? '' : 'd-none' } aria-controls='basic-navbar-nav' />
                 <Navbar.Collapse id='basic-navbar-nav'>
                     <Nav className='mr-auto'>
                     <Form className={ isAuthenticated === true ? '' : 'd-none' } onSubmit={this.onSubmit} inline>
@@ -50,7 +49,7 @@ class Navigation extends Component {
                     <Nav.Link className={ isAuthenticated === true ? '' : 'd-none' } href='/tickets'>Home</Nav.Link>
                     <Nav.Link className={ isAuthenticated === true ? '' : 'd-none' } href='/new'>New Ticket</Nav.Link>
                     <Nav.Link className={ isAuthenticated === true ? '' : 'd-none' } onClick={this.myTickets}>My Tickets</Nav.Link>
-                    <Nav.Link className={ isAuthenticated === true ? '' : 'd-none' } href='' onClick={this.onLogoutClick}>Logout</Nav.Link>
+                    <Nav.Link className={ isAuthenticated === true ? '' : 'd-none' } onClick={this.onLogoutClick}>Logout</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

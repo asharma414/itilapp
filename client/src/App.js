@@ -46,6 +46,7 @@ function App() {
           <Switch>
               <PrivateRoute exact path='/tickets' component={TicketList} />
               <PrivateRoute exact path='/tickets/:id' component={TicketPage} />
+              <PrivateRoute exact path='/mytickets' component={TicketList} />
               <PrivateRoute exact path='/new' component={NewTicket} />
           </Switch>
         </Router>

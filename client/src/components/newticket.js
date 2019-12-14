@@ -4,6 +4,7 @@ import { newTicket } from '../actions/ticketActions';
 import { findUser } from '../actions/userActions';
 import PropTypes from 'prop-types';
 import { Form, Button, Row, Col } from 'react-bootstrap';
+import LoadingScreen from './loadingscreen';
 
 class NewTicket extends Component {
     state = {
@@ -61,59 +62,68 @@ class NewTicket extends Component {
 
     render() {
         const { users } = this.props.user;
-        return (
-            <div>
-                <datalist id='datalist1'>
-                {
-                    users.map(user => (
-                        <option key={user._id} value={user.name}></option>
-                ))}
-                </datalist>
-                <Form className='my-4' onSubmit={this.ticketSubmit}>
-                    <Form.Group controlId="title">
-                        <Form.Label>Title</Form.Label>
-                        <Form.Control type='text' onChange={this.onChange} value={this.state.title} required placeholder="Ticket Title" />
+        const { loading } = this.props.user;
+        if (loading === true) {
+            return (
+                <div className='container'>
+                    <LoadingScreen />
+                </div>
+            )
+        } else {
+            return (
+                <div>
+                    <datalist id='datalist1'>
+                    {
+                        users.map(user => (
+                            <option key={user._id} value={user.name}></option>
+                    ))}
+                    </datalist>
+                    <Form className='my-4' onSubmit={this.ticketSubmit}>
+                        <Form.Group controlId="title">
+                            <Form.Label>Title</Form.Label>
+                            <Form.Control type='text' onChange={this.onChange} value={this.state.title} required placeholder="Ticket Title" />
+                        </Form.Group>
+                        <Form.Group controlId="assignedTo">
+                            <Form.Label>Assigned To</Form.Label>
+                            <Form.Control  list='datalist1' type='text' value={this.state.assignedTo} onChange={this.onChange} required placeholder='Assign ticket to user' />
+                        </Form.Group>
+                    <Row>
+                        <Col>
+                            <Form.Group controlId="customerName">
+                                <Form.Label>Customer Name</Form.Label>
+                                <Form.Control type='text' onChange={this.onChange} value={this.state.customerName} placeholder="Customer's Name" />
+                            </Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group controlId="customerContact">
+                                <Form.Label>Customer Contact</Form.Label>
+                                <Form.Control type='text' onChange={this.onChange} value={this.state.customerContact} placeholder="Customer's Contact Info" />
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Form.Group controlId='status'>
+                                <Form.Label>Status</Form.Label>
+                                <Form.Control as='select' value={this.state.newStatus} onChange={this.onChange}>
+                                    <option>New</option>
+                                    <option>Awaiting Customer Feedback</option>
+                                    <option>In Progress</option>
+                                    <option>Cancelled</option>
+                                    <option>Resolved</option>
+                                </Form.Control>
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <Form.Group controlId="description">
+                        <Form.Label>Description</Form.Label>
+                        <Form.Control as='textarea' value={this.state.description} onChange={this.onChange} required placeholder="Ticket description" />
                     </Form.Group>
-                    <Form.Group controlId="assignedTo">
-                        <Form.Label>Assigned To</Form.Label>
-                        <Form.Control  list='datalist1' type='text' value={this.state.assignedTo} onChange={this.onChange} required placeholder='Assign ticket to user' />
-                    </Form.Group>
-                <Row>
-                    <Col>
-                        <Form.Group controlId="customerName">
-                            <Form.Label>Customer Name</Form.Label>
-                            <Form.Control type='text' onChange={this.onChange} value={this.state.customerName} placeholder="Customer's Name" />
-                        </Form.Group>
-                    </Col>
-                    <Col>
-                        <Form.Group controlId="customerContact">
-                            <Form.Label>Customer Contact</Form.Label>
-                            <Form.Control type='text' onChange={this.onChange} value={this.state.customerContact} placeholder="Customer's Contact Info" />
-                        </Form.Group>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Form.Group controlId='status'>
-                            <Form.Label>Status</Form.Label>
-                            <Form.Control as='select' value={this.state.newStatus} onChange={this.onChange}>
-                                <option>New</option>
-                                <option>Awaiting Customer Feedback</option>
-                                <option>In Progress</option>
-                                <option>Cancelled</option>
-                                <option>Resolved</option>
-                            </Form.Control>
-                        </Form.Group>
-                    </Col>
-                </Row>
-                <Form.Group controlId="description">
-                    <Form.Label>Description</Form.Label>
-                    <Form.Control as='textarea' value={this.state.description} onChange={this.onChange} required placeholder="Ticket description" />
-                </Form.Group>
-                <Button variant="primary" type="submit">Submit</Button>
-            </Form>
-        </div>
-        )
+                    <Button variant="outline-primary" type="submit">Submit</Button>
+                </Form>
+            </div>
+            )
+                }
     }
 }
 

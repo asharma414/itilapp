@@ -96,10 +96,10 @@ class TicketPage extends Component {
             let assignedToIndex = userArr.indexOf(this.state.assignedTo)
             const { id } = this.props.match.params;
             if (this.state.newStatus !== this.state.status) {
-                this.commentPost(`Status is <i>${this.state.newStatus}</i> was <i>${this.state.status}</i>`)
+                this.commentPost(`Status is <em>${this.state.newStatus}</em> was <em>${this.state.status}</em>`)
             }
             if (this.state.newOpen !== this.state.open) {
-                this.commentPost(`State is <i>${this.state.newOpen}</i> was <i>${this.state.open}</i>`)
+                this.commentPost(`State is <em>${this.state.newOpen}</em> was <em>${this.state.open}</em>`)
             }
             const updatedTicket = {
                 description: this.state.description,
@@ -128,7 +128,8 @@ class TicketPage extends Component {
 
     render() {
         const { users } = this.props.user;
-        if (this.state.loading === true) {
+        const { loading } = this.props.user;
+        if (this.state.loading === true && loading === true) {
             return (
                 <div className='container'>
                     <LoadingScreen />
@@ -203,27 +204,27 @@ class TicketPage extends Component {
                                 </Form.Group>
                             </Col>
                         </Row>
-                        <Form.Group controlId="assignedTo">
+                        <Form.Group controlId='assignedTo'>
                             <Form.Label>Assigned To</Form.Label>
                             <Form.Control  list='datalist1' type='text' value={this.state.assignedTo} onChange={this.onChange} required placeholder='Assign ticket to user' />
                         </Form.Group>
-                        <Form.Group controlId="description">
+                        <Form.Group controlId='description'>
                             <Form.Label>Description</Form.Label>
                             <Form.Control as='textarea' value={this.state.description} onChange={this.onChange} required placeholder="Ticket description" />
                         </Form.Group>
-                        <Button variant="primary" type="submit">Submit</Button>
+                        <Button variant='outline-primary' type='submit'>Submit</Button>
                     </Form>
                     <div className='my-4 commentForm'>
                         <Form onSubmit={this.commentSubmit}>
-                        <Form.Group controlId="commentText">
+                        <Form.Group controlId='commentText'>
                             <Form.Label>New Comment</Form.Label>
                             <Form.Control as='textarea' value={this.state.newComment} onChange={this.onChange} placeholder="Enter ticket description" />
                         </Form.Group>
-                        <Button variant="primary" type="submit">Post Comment</Button>
+                        <Button variant='outline-secondary' type='submit'>Post Comment</Button>
                         </Form>
                     </div>
                         {this.state.comments.map(comment =>
-                            <div key={comment._id} className="mt-3 card-footer"> 
+                            <div key={comment._id} className='mt-3 card-footer'> 
                                 <div className='row'>
                                         <div className='col-md-12'>
                                             <div className='row'>

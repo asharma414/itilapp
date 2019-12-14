@@ -3,8 +3,10 @@ const Ticket = require('../models/ticket.model')
 const auth = require('../middleware/auth');
 
 //get ticket list
+
 router.get('/', auth, async (req, res) => {
-    if(req.query.term) {
+    //check if finding users tickets or searching by keyword
+    if(req.query.name.length === 0) {
         const regex = new RegExp(escapeRegex(req.query.term), 'gi');
         try {
             let tickets = await Ticket.find({
@@ -21,6 +23,16 @@ router.get('/', auth, async (req, res) => {
         } catch(e) {
             console.log(e);
         }
+    } else if (req.query.name.length > 0) {
+        try {
+            let tickets = await Ticket.find({
+                "assignedTo.name": req.query.name
+            })
+            res.json(tickets)
+        } catch(e) {
+            console.log(e);
+        }
+    //if not finding specific tickets, find all
     } else {
         try {
             let tickets = await Ticket.find({})
@@ -61,6 +73,7 @@ router.put('/:id', auth, (req, res) => {
         }
     });
 });
+
 
 //function converts text into regex that can be used to fuzzy
 function escapeRegex(text) {

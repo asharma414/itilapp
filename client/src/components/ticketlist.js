@@ -8,7 +8,7 @@ import LoadingScreen from './loadingscreen';
 
 class TicketList extends Component {
     componentDidMount() {
-        this.props.getTickets('');
+        this.props.getTickets('', '');
     }
 
     showDetails = (path) => {
