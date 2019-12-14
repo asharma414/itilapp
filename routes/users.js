@@ -99,9 +99,5 @@ router.get('/', auth, async (req, res) => {
     }
 });
 
-// function escapeRegex(text) {
-//   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-// };
-
 module.exports = router;
    

@@ -205,11 +205,11 @@ class TicketPage extends Component {
                         </Row>
                         <Form.Group controlId="assignedTo">
                             <Form.Label>Assigned To</Form.Label>
-                            <Form.Control  list='datalist1' type='text' value={this.state.assignedTo} onChange={this.onChange} />
+                            <Form.Control  list='datalist1' type='text' value={this.state.assignedTo} onChange={this.onChange} required placeholder='Assign ticket to user' />
                         </Form.Group>
                         <Form.Group controlId="description">
                             <Form.Label>Description</Form.Label>
-                            <Form.Control as='textarea' value={this.state.description} onChange={this.onChange} placeholder="Ticket description" />
+                            <Form.Control as='textarea' value={this.state.description} onChange={this.onChange} required placeholder="Ticket description" />
                         </Form.Group>
                         <Button variant="primary" type="submit">Submit</Button>
                     </Form>

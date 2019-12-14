@@ -20,11 +20,6 @@ class NewTicket extends Component {
         this.props.findUser();
     }
 
-    // onKeyUp = (e) => {
-    //     this.props.findUser(this.state.assignedTo);
-    //     this.setState({ userList: this.props.user.users })
-    // }
-
     onChange = (e) => {
         this.setState({ [e.target.id] : e.target.value })
     }
@@ -32,8 +27,10 @@ class NewTicket extends Component {
     ticketSubmit = async (e) => {
         e.preventDefault();
         const { users } = this.props.user;
+        //convert user list into array and verify if typed value exists
         let userArr = users.map(user => user.name);
         if (userArr.includes(this.state.assignedTo)){
+            //get index of assignedTo in userArr and use to find User ID
             let assignedToIndex = userArr.indexOf(this.state.assignedTo)
             const { user } = this.props.auth;
             if (this.state.title.length > 0 && this.state.description.length > 0){
@@ -75,11 +72,11 @@ class NewTicket extends Component {
                 <Form className='my-4' onSubmit={this.ticketSubmit}>
                     <Form.Group controlId="title">
                         <Form.Label>Title</Form.Label>
-                        <Form.Control type='text' onChange={this.onChange} value={this.state.title} placeholder="Ticket Title" />
+                        <Form.Control type='text' onChange={this.onChange} value={this.state.title} required placeholder="Ticket Title" />
                     </Form.Group>
                     <Form.Group controlId="assignedTo">
                         <Form.Label>Assigned To</Form.Label>
-                        <Form.Control  list='datalist1' type='text' value={this.state.assignedTo} onChange={this.onChange} />
+                        <Form.Control  list='datalist1' type='text' value={this.state.assignedTo} onChange={this.onChange} required placeholder='Assign ticket to user' />
                     </Form.Group>
                 <Row>
                     <Col>
@@ -111,7 +108,7 @@ class NewTicket extends Component {
                 </Row>
                 <Form.Group controlId="description">
                     <Form.Label>Description</Form.Label>
-                    <Form.Control as='textarea' value={this.state.description} onChange={this.onChange} placeholder="Ticket description" />
+                    <Form.Control as='textarea' value={this.state.description} onChange={this.onChange} required placeholder="Ticket description" />
                 </Form.Group>
                 <Button variant="primary" type="submit">Submit</Button>
             </Form>
