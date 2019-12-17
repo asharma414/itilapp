@@ -10,6 +10,8 @@ const ticketRoutes = require('./routes/tickets');
 const commentRoutes = require('./routes/comments');
 const path = require('path');
 
+app.use(cors());
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api/users', userRoutes);
