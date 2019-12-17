@@ -23,7 +23,7 @@ app.use(passport.initialize());
 // Passport config
 require('./passport')(passport);
 
-if(process.env.NODE_DEV === 'production') {
+if(process.env.NODE_DEV === 'production' || process.env.NODE_DEV === 'staging') {
     // set static folder
     app.use(express.static('client/build'));
 
