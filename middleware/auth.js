@@ -1,4 +1,4 @@
-const keys = 'secret';
+const key = require('../keys').secretOrKey;
 const jwt = require('jsonwebtoken');
 
 function auth(req, res, next) {
@@ -10,7 +10,7 @@ function auth(req, res, next) {
 
   try {
     // Verify token
-    const decoded = jwt.verify(token, keys);
+    const decoded = jwt.verify(token, key);
     // Add user from payload
     req.user = decoded;
     next();

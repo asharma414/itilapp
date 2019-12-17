@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const keys = 'secret';
+const key = require('../keys').secretOrKey;
 const auth = require('../middleware/auth');
 const User = require('../models/user.model');
 
@@ -68,7 +68,7 @@ const email = req.body.email;
 // Sign token
         jwt.sign(
           payload,
-          keys,
+          key,
           {
             expiresIn: 31556926 // 1 year in seconds
           },
