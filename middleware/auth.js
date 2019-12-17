@@ -1,4 +1,4 @@
-const key = require('../keys').secretOrKey;
+const key = process.env.SECRET || 'secret';
 const jwt = require('jsonwebtoken');
 
 function auth(req, res, next) {
