@@ -7,7 +7,7 @@ import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING } from "./types";
 //Register user
 export const registerUser = (userData, history, clear) => dispatch => {
     axios
-        .post('/users/register', userData)
+        .post('/api/users/register', userData)
         .then(res => {
             history.push('/login');
             clear();
@@ -23,7 +23,7 @@ export const registerUser = (userData, history, clear) => dispatch => {
 
 export const loginUser = (userData, history) => dispatch => {
     axios
-        .post('/users/login', userData)
+        .post('/api/users/login', userData)
         .then(res => {
             const { token } = res.data;
             localStorage.setItem('jwtToken', token);

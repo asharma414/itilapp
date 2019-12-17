@@ -36,7 +36,7 @@ class TicketPage extends Component {
     getTicket() {
         const { id } = this.props.match.params;
         axios
-            .get(`/tickets/${id}`)
+            .get(`/api/tickets/${id}`)
             .then(res => 
                 this.setState({
                     title: res.data.title,

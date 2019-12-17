@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const keys = require('../../keys');
+const keys = process.env.secretOrKey || require('../../keys');
 const auth = require('../middleware/auth');
 const User = require('../models/user.model');
 
@@ -10,7 +10,7 @@ const validateRegisterInput = require('../middleware/register');
 const validateLoginInput = require('..//middleware/login');
 
 router.post('/register', (req, res) => {
-  // Form validation
+// Form validation
 const { errors, isValid } = validateRegisterInput(req.body);
 // Check validation
   if (!isValid) {

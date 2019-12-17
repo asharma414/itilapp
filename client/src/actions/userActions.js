@@ -5,7 +5,7 @@ import { returnErrors } from './errorActions';
 export const findUser = user => dispatch => {
     dispatch(setUserLoading());
     axios
-        .get('/users')
+        .get('/api/users')
         .then(res => dispatch({
             type: FIND_USER,
             payload: res.data

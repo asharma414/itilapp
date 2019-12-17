@@ -6,7 +6,7 @@ import { returnErrors } from './errorActions';
 export const getTickets = (term, name) => dispatch => {
     dispatch(setItemsLoading());
     axios
-        .get('/tickets', {
+        .get('/api/tickets', {
             params: {
                 term: term,
                 name: name
@@ -25,7 +25,7 @@ export const getTickets = (term, name) => dispatch => {
 
 export const newTicket = ticket => dispatch => {
     axios
-        .post('/tickets/create', ticket)
+        .post('/api/tickets/create', ticket)
         .then(res => 
             dispatch({
                 type: ADD_TICKET
@@ -38,7 +38,7 @@ export const newTicket = ticket => dispatch => {
 
 export const updateTicket = (id, data) => dispatch  => {
     axios
-        .put(`/tickets/${id}`, data)
+        .put(`/api/tickets/${id}`, data)
         .then(res => 
             dispatch({
                 type: UPDATE_TICKET

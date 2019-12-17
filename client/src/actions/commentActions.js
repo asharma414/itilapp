@@ -4,7 +4,7 @@ import { returnErrors } from './errorActions';
 
 export const addComment = (id, data) => dispatch => {
     axios
-        .post(`/tickets/${id}/comments`, data)
+        .post(`/api/tickets/${id}/comments`, data)
         .then(res => dispatch({
             type: ADD_COMMENT
         })
