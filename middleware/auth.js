@@ -1,4 +1,4 @@
-const keys = process.env.secretOrKey;
+const keys = 'secret';
 const jwt = require('jsonwebtoken');
 
 function auth(req, res, next) {
@@ -10,7 +10,7 @@ function auth(req, res, next) {
 
   try {
     // Verify token
-    const decoded = jwt.verify(token, keys.secretOrKey);
+    const decoded = jwt.verify(token, keys);
     // Add user from payload
     req.user = decoded;
     next();
