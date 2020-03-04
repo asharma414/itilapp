@@ -41,15 +41,15 @@ User.findOne({ email: req.body.email }).then(user => {
 });
 
 
-router.post('/login', (req, res) => {
+router.get('/login', (req, res) => {
   // Form validation
-const { errors, isValid } = validateLoginInput(req.body);
+const { errors, isValid } = validateLoginInput(req.params);
 // Check validation
   if (!isValid) {
     return res.status(400).json(errors);
   }
-const email = req.body.email;
-  const password = req.body.password;
+const email = req.params.email;
+  const password = req.params.password;
 // Find user by email
   User.findOne({ email }).then(user => {
     // Check if user exists
