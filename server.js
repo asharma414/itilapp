@@ -12,12 +12,6 @@ const path = require('path');
 
 app.use(cors());
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use('/api/users', userRoutes);
-app.use('/api/tickets/:id/comments', commentRoutes);
-app.use('/api/tickets', ticketRoutes);
-
 mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB successfully connected'))
     .catch(err => console.log(err));
@@ -26,6 +20,13 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
 app.use(passport.initialize());
 // Passport config
 require('./passport')(passport);
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/api/users', userRoutes);
+app.use('/api/tickets/:id/comments', commentRoutes);
+app.use('/api/tickets', ticketRoutes);
+
 
 if(process.env.NODE_DEV === 'production') {
     // set static folder
