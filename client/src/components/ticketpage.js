@@ -85,7 +85,7 @@ class TicketPage extends Component {
             }
         }
         await this.props.addComment(id, newComment);
-        this.getTicket();
+        window.location.reload();
     }
 
     ticketSubmit = async (e) => {
@@ -115,10 +115,10 @@ class TicketPage extends Component {
                 }
             }
             await this.props.updateTicket(id, updatedTicket);
-            this.getTicket();
         } else {
             alert('Invalid assigned to user')
         }
+        window.location.reload();
     }
 
     commentSubmit = (e) => {
