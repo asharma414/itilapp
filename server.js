@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
-const db = 'mongodb+srv://test:test@cluster0-go8ql.mongodb.net/itilapp?retryWrites=true&w=majority';
+const db = process.env.mongoURI;
 const port = process.env.PORT || 5000;
 const passport = require('passport');
 const userRoutes = require('./routes/users');
