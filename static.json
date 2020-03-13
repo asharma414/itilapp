@@ -1,0 +1,8 @@
+{
+    "root": "client/build/",
+    "proxies": {
+        "/api/": {
+            "origin": "127.0.0.1:${PORT}/api/"
+        }
+    }
+}
