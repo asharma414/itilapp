@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const config = require('dotenv').config()
 const cors = require('cors');
 const app = express();
 const db = process.env.mongoURI;
@@ -36,6 +35,8 @@ if(process.env.NODE_ENV === 'production') {
     app.get('*', (req, res) => {
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
     });
+} else {
+    const config = require('dotenv').config();
 }
 
 app.listen(port, () => {
