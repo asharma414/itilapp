@@ -1,6 +1,9 @@
 const router = require('express').Router();
-const Ticket = require('../models/ticket.model')
+const Ticket = require('../models/ticket.model');
+const Comment = require('../models/comment.model');
+const TicketResolve = require('../models/ticketResolve.model');
 const auth = require('../middleware/auth');
+
 
 //get ticket list
 
@@ -14,12 +17,35 @@ router.get('/', auth, async (req, res) => {
                     { title: { $regex: regex } },
                     { description: { $regex: regex } }
                 ]
+            }).populate('closed').exec((err, tickets) => {
+                if (tickets.length < 1) {
+                    res.json([])
+                } else {
+                    for (let i = 0; i < tickets.length; i++) {
+                        if (tickets[i].status === 'Resolved' && tickets[i].closed === null && tickets[i].open === true) {
+                            Ticket.findOneAndUpdate({ _id: tickets[i]._id }, { open: false }, (err, result) => {
+                            })
+                            Ticket.findById(tickets[i]._id, (err, ticket) => {
+                                if(err) {
+                                    res.status(404).json({ msg: 'Ticket not found'})
+                                } else {
+                                    Comment.create({ text: 'State is <i>Closed</i> was <i>Open</i>', author: { name: 'System' } }, (err, comment) => {
+                                        if(err) {
+                                            res.status(500).json({ msg: 'Server error' })
+                                        } else {
+                                            comment.save();
+                                            //save comment
+                                            ticket.comments.push(comment);
+                                            ticket.save();
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+                    res.json(tickets);
+                }
             })
-            if (tickets.length < 1) {
-                res.json([])
-            } else {
-            res.json(tickets);
-            }
         } catch(e) {
             console.log(e);
         }
@@ -69,6 +95,21 @@ router.put('/:id', auth, (req, res) => {
         if(err){
             res.status(404).json({ success: false })
         } else {
+            console.log(updatedTicket);
+            if(req.body.status === 'Resolved') {
+                console.log('resolved ticket')
+                let newResolve = new TicketResolve({
+                    close_ref: updatedTicket._id
+                });
+                newResolve.save((err, result) => {
+                    console.log('saved relation');
+                })
+                Ticket.findOneAndUpdate({ _id: updatedTicket._id }, { closed: newResolve._id }, (err, updatedTicket) => {
+                    if(err){
+                        console.log(err);
+                    }
+                })
+            }
             res.json('ticket updated');
         }
     });
