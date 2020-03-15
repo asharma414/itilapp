@@ -10,12 +10,13 @@ XSS prevention: DOM-Purify
 Fuzzy Searching: Using regular expressions
 
 Features:
-User creation
-Ticket creation
-Ticket updating
-Ticket fuzzy searching
-Ticket commenting
-Ability to assign tickets to users
+User creation,
+Ticket creation,
+Ticket updating,
+Ticket fuzzy searching,
+Ticket commenting,
+Ability to assign tickets to users,
+Autoclosing of resolved tickets
 
 
 
