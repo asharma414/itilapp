@@ -59,13 +59,6 @@ router.get('/', auth, async (req, res) => {
             console.log(e);
         }
     //if not finding specific tickets, find all
-    } else {
-        try {
-            let tickets = await Ticket.find({})
-            res.json(tickets);
-        } catch(e) {
-            console.log(e);
-        }
     }
 });
 
@@ -95,14 +88,11 @@ router.put('/:id', auth, (req, res) => {
         if(err){
             res.status(404).json({ success: false })
         } else {
-            console.log(updatedTicket);
-            if(req.body.status === 'Resolved') {
-                console.log('resolved ticket')
+            if(req.body.status === 'Resolved' || req.body.status === 'Cancelled') {
                 let newResolve = new TicketResolve({
                     close_ref: updatedTicket._id
                 });
                 newResolve.save((err, result) => {
-                    console.log('saved relation');
                 })
                 Ticket.findOneAndUpdate({ _id: updatedTicket._id }, { closed: newResolve._id }, (err, updatedTicket) => {
                     if(err){
