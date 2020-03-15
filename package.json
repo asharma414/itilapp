@@ -13,10 +13,8 @@
     },
     "author": "Abhinav Sharma",
     "license": "MIT",
-    "devDependencies": {
-        "dotenv": "^8.2.0"
-    },
     "dependencies": {
+        "dotenv": "^8.2.0",
         "bcryptjs": "^2.4.3",
         "concurrently": "^4.1.2",
         "cors": "^2.8.5",
