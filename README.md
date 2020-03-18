@@ -16,8 +16,7 @@ Ticket updating,
 Ticket fuzzy searching,
 Ticket commenting,
 Ability to assign tickets to users,
-Autoclosing of resolved tickets
-\n
+Autoclosing of resolved tickets. 
 Demo at https://itilapp.herokuapp.com
 
 
