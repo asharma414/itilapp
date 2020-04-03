@@ -7,6 +7,7 @@ import Navigation from './components/navbar';
 import Register from './components/auth/register'
 import Login from './components/auth/login';
 import NewTicket from './components/newticket';
+import ActivatedScreen from './components/activatedscreen';
 import TicketPage from './components/ticketpage';
 import PrivateRoute  from './components/protected-route/privateroute';
 import Page404 from './components/page404';
@@ -45,6 +46,7 @@ function App() {
               <Route path='/' exact component={Login} />
               <Route path='/login' exact component={Login} />
               <Route path='/register' exact component={Register} />
+              <Route path='/verify/:hash' exact component={ActivatedScreen} />
               <PrivateRoute exact path='/tickets' component={TicketList} />
               <PrivateRoute exact path='/tickets/:id' component={TicketPage} />
               <PrivateRoute exact path='/mytickets' component={TicketList} />

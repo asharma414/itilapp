@@ -9,3 +9,4 @@ export const TICKETS_LOADING = 'TICKETS_LOADING';
 export const ADD_COMMENT = 'ADD_COMMENT';
 export const FIND_USER = 'FIND_USER';
 export const USERS_LOADING = 'USERS_LOADING';
+export const ACTIVATE_USER = "ACTIVATE_USER";

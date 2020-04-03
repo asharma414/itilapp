@@ -58,7 +58,6 @@ router.get('/', auth, async (req, res) => {
         } catch(e) {
             console.log(e);
         }
-    //if not finding specific tickets, find all
     }
 });
 

@@ -11,14 +11,28 @@ export const registerUser = (userData, history, clear) => dispatch => {
         .then(res => {
             history.push('/login');
             clear();
-        }
-        ) //redirect to login page after registration
+        }) //redirect to login page after registration
         .catch(err => 
             dispatch({
                 type: GET_ERRORS,
                 payload: err.response.data
             })
         );
+}
+
+export const activate = (hash) =>  dispatch => {
+     axios
+        .get('/api/verify', {
+            params: {
+                hash: hash
+            }
+        })
+        .catch(err => {
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            })
+        })
 }
 
 export const loginUser = (userData, history) => dispatch => {
@@ -57,3 +71,4 @@ export const logoutUser = () => dispatch => {
     setAuthToken(false);
     dispatch(setCurrentUser({}))
 };
+
