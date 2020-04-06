@@ -17,7 +17,7 @@ Ticket fuzzy searching,
 Ticket commenting,
 Ability to assign tickets to users,
 Autoclosing of resolved tickets.
-Email verification functionality for registered users.
+Email verification functionality for registered users (in source code but not Heroku demo).
 Demo at https://itilapp.herokuapp.com
 
 
