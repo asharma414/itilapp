@@ -13,7 +13,8 @@ class Register extends Component {
     name: '',
     email: '',
     password: '',
-    password2: ''
+    password2: '',
+    verify: false
   };
 
     componentDidMount() {
@@ -30,7 +31,11 @@ class Register extends Component {
     }
   
     onChange = e => {
+        if(e.target.id === 'verify') {
+          this.setState( {[e.target.id]: e.target.checked})
+        } else {
         this.setState({ [e.target.id]: e.target.value });
+        }
       };
     onSubmit = e => {
         e.preventDefault();
@@ -39,7 +44,8 @@ class Register extends Component {
               name: this.state.name,
               email: this.state.email,
               password: this.state.password,
-              password2: this.state.password2
+              password2: this.state.password2,
+              verify: this.state.verify
         };
             
         this.props.registerUser(newUser, this.props.history, this.props.clearErrors);
@@ -71,6 +77,10 @@ class Register extends Component {
                   <Form.Label>Confirm Password</Form.Label>
                   <span className='text-danger'>      {errors.password2}</span>
                   <Form.Control value={this.state.password2} onChange={this.onChange} type="password" error={errors.password2} autoComplete='new-password' placeholder="Password" />
+              </Form.Group>
+              <Form.Group controlId="verify">
+                  <Form.Label>Verify Email Address?</Form.Label>
+                  <Form.Control value={this.state.verify} onChange={this.onChange} type="checkbox" />
               </Form.Group>
               <Button variant="primary" type="submit" onSubmit={this.onSubmit}>Register</Button>
               </Form>

@@ -14,6 +14,7 @@ const validateLoginInput = require('..//middleware/login');
 router.post('/register', (req, res) => {
 // Form validation
 const { errors, isValid } = validateRegisterInput(req.body);
+console.log(req.body)
 // Check validation
   if (!isValid) {
     return res.status(400).json(errors);
@@ -31,6 +32,7 @@ User.findOne({ email: req.body.email }).then(user => {
       bcrypt.genSalt(10, (err, passSalt) => {
         bcrypt.hash(newUser.password, passSalt, (err, passHash) => {
           if (err) throw err;
+          if (req.body.verify === true) {
           sha1(req.body.email)
           let emailHash = sha1.create();
           newUser.activationHash = emailHash;
@@ -59,6 +61,15 @@ User.findOne({ email: req.body.email }).then(user => {
               });
               res.json(user)
           });
+        } else {
+          newUser.active = true; 
+          newUser.password = passHash;
+          newUser
+            .save()
+            .then(user => {
+              res.json(user);
+            });
+          }
         });
       });
     }
@@ -81,7 +92,7 @@ const password = req.body.password;
       return res.status(404).json({ emailnotfound: 'Email not found' });
     }
 
-    if(user.active == true) {
+    if(user.active === true) {
 // Check password
       bcrypt.compare(password, user.password).then(isMatch => {
         if (isMatch) {

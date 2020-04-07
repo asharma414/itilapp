@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/api/verify', async (req, res) => {
     await User.findOneAndUpdate({ activationHash: req.query.hash }, { active: true }, (err, result) => {
         if(!result) {
-            return res.status(404).json({ emailnotfound: 'Email not found' });
+            return res.status(404).json({ userNotFound: 'User not found' });
         }
     });
 }) 

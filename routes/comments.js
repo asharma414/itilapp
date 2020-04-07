@@ -6,7 +6,7 @@ const auth = require('../middleware/auth');
 router.post('/', auth, (req,res) => {
     Ticket.findById(req.params.id, (err, ticket) => {
         if(err) {
-            res.status(404).json({ msg: 'Ticket not found'})
+            res.status(404).json({ msg: 'Ticket not found' })
         } else {
             Comment.create(req.body, (err, comment) => {
                 if(err) {
