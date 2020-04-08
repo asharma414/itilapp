@@ -14,6 +14,7 @@ class Login extends Component {
         };
 
       componentDidMount() {
+        this.props.clearErrors();
         // If logged in and user navigates to Login page, should redirect them to dashboard
         if (this.props.auth.isAuthenticated) {
           this.props.history.push('/tickets');
@@ -58,6 +59,7 @@ class Login extends Component {
                       <Form.Control onChange={this.onChange} type='password' error={errors.password} autoComplete='current-password' placeholder="Password" />
                   </Form.Group>
                   <Button variant="primary" type="submit">Login</Button>
+                  <span className='text-danger'>      {errors.activated}</span>
                 </Form>
               </div>
           </div>

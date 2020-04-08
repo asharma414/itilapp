@@ -14,7 +14,6 @@ const validateLoginInput = require('..//middleware/login');
 router.post('/register', (req, res) => {
 // Form validation
 const { errors, isValid } = validateRegisterInput(req.body);
-console.log(req.body)
 // Check validation
   if (!isValid) {
     return res.status(400).json(errors);
@@ -52,7 +51,7 @@ User.findOne({ email: req.body.email }).then(user => {
               let mailOptions = {
                 to: req.body.email,
                 subject: "Activation email for ITILApp",
-                html: `<p>Hi! Please click the following link to activate your ITILApp account</p> <a href='http://localhost:3000/verify/${emailHash}'>Activation Link</a>`
+                html: `<p>Hi! Please click the following link to activate your ITILApp account</p> <a href='https://itilapp.herokuapp.com/verify/${emailHash}'>Activation Link</a>`
               };
               transporter.sendMail(mailOptions, (error, info) => {
                   if (error) {
@@ -78,7 +77,7 @@ User.findOne({ email: req.body.email }).then(user => {
 
 router.post('/login', (req, res) => {
   // Form validation
-const { errors, isValid } = validateLoginInput(req.body);
+let { errors, isValid } = validateLoginInput(req.body);
 // Check validation
   if (!isValid) {
     return res.status(400).json(errors);
@@ -122,6 +121,8 @@ const password = req.body.password;
             .json({ passwordincorrect: 'Password incorrect' });
         }
       });
+  } else {
+    return res.status(403).json({ activated: 'Account not activated'})
   }
   });
 });
