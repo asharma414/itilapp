@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 import LoadingScreen from './loadingscreen';
 
 class TicketList extends Component {
+
     componentDidMount() {
         this.props.getTickets('', '');
     }
@@ -36,14 +37,14 @@ class TicketList extends Component {
                     <Table className='my-4' striped bordered hover responsive='md'>
                         <thead>
                             <tr>
-                                <td>Title</td>
-                                <td>Description</td>
-                                <td>Status</td>
-                                <td>Open?</td>
-                                <td>Author</td> 
-                                <td>Assigned To</td>
-                                <td>Created</td>
-                                <td>Last Modified</td>
+                                <th onClick={sortTable(0)}>Title</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Open?</th>
+                                <th>Author</th> 
+                                <th>Assigned To</th>
+                                <th>Created</th>
+                                <th>Last Modified</th>
                             </tr>
                         </thead>
                         <tbody>

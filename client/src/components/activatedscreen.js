@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import LoadingScreen from './loadingscreen';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { activate } from '../actions/authActions';
-import axios from 'axios';
 
 class ActivatedScreen extends Component {
 
