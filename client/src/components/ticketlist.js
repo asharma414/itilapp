@@ -50,7 +50,7 @@ class TicketList extends Component {
                         {tickets.map(ticket => (
                             <tr className='ticket' key={ticket._id} onClick={() => this.showDetails(`/tickets/${ticket._id}`)}>
                                     <td>{ticket.title}</td>
-                                    <td className='toolTip'>{ticket.description.substring(0, 25)}<span className='tooltiptext'>{ticket.description}</span></td>
+                                    <td>{ticket.description.substring(0, 25)}</td>
                                     <td>{ticket.status}</td>
                                     <td>{(ticket.open === true) ? 'Open' : 'Closed'}</td>
                                     <td>{ticket.author.name}</td>
