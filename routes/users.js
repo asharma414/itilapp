@@ -1,7 +1,6 @@
 const router = require('express').Router({mergeParams: true});
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const sha1 = require('js-sha1');
 const nodeMailer = require('nodemailer');
 const key = process.env.SECRET;
 const auth = require('../middleware/auth');
@@ -32,9 +31,6 @@ User.findOne({ email: req.body.email }).then(user => {
         bcrypt.hash(newUser.password, passSalt, (err, passHash) => {
           if (err) throw err;
           if (req.body.verify === true) {
-          sha1(req.body.email)
-          let emailHash = sha1.create();
-          newUser.activationHash = emailHash;
           newUser.password = passHash;
           newUser
             .save()
@@ -51,7 +47,7 @@ User.findOne({ email: req.body.email }).then(user => {
               let mailOptions = {
                 to: req.body.email,
                 subject: "Activation email for ITILApp",
-                html: `<p>Hi! Please click the following link to activate your ITILApp account</p> <a href='https://itilapp.herokuapp.com/verify/${emailHash}'>Activation Link</a>`
+                html: `<p>Hi! Please click the following link to activate your ITILApp account</p> <a href='https://itilapp.herokuapp.com/verify/${newUser._id}'>Activation Link</a>`
               };
               transporter.sendMail(mailOptions, (error, info) => {
                   if (error) {

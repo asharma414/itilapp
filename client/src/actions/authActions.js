@@ -20,11 +20,11 @@ export const registerUser = (userData, history, clear) => dispatch => {
         );
 }
 
-export const activate = (hash) =>  dispatch => {
+export const activate = (id) =>  dispatch => {
      axios
         .get('/api/verify', {
             params: {
-                hash: hash
+                id: id
             }
         })
         .catch(err => {

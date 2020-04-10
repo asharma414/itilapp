@@ -20,7 +20,6 @@
         "dotenv": "^8.2.0",
         "express": "^4.16.4",
         "is-empty": "^1.2.0",
-        "js-sha1": "^0.6.0",
         "jsonwebtoken": "^8.3.0",
         "mongoose": "^5.9.7",
         "nodemailer": "^6.4.6",
@@ -28,6 +27,7 @@
         "passport": "^0.4.1",
         "passport-jwt": "^4.0.0",
         "rxjs": "^6.5.5",
+        "sha2": "^1.0.2",
         "validator": "^10.11.0"
     }
 }
