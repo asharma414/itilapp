@@ -17,7 +17,7 @@ Ticket fuzzy searching,
 Ticket commenting,
 Ability to assign tickets to users,
 Autoclosing of resolved tickets.
-Email verification functionality for registered users (use checkbox in registration form)
+Email verification functionality for registered users (use checkbox in registration form. It uses a gmail account I set up specifically to verify. I won't spam you. Please don't spam me!)
 Demo at https://itilapp.herokuapp.com
 
 
