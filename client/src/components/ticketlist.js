@@ -37,7 +37,7 @@ class TicketList extends Component {
                     <Table className='my-4' striped bordered hover responsive='md'>
                         <thead>
                             <tr>
-                                <th onClick={sortTable(0)}>Title</th>
+                                <th>Title</th>
                                 <th>Description</th>
                                 <th>Status</th>
                                 <th>Open?</th>
