@@ -97,9 +97,6 @@ class TicketPage extends Component {
             if (this.state.newStatus !== this.state.status) {
                 this.commentPost(`Status is <em>${this.state.newStatus}</em> was <em>${this.state.status}</em>`)
             }
-            if (this.state.newOpen !== this.state.open) {
-                this.commentPost(`State is <em>${this.state.newOpen}</em> was <em>${this.state.open}</em>`)
-            }
             const updatedTicket = {
                 description: this.state.description,
                 customer: {
@@ -107,7 +104,6 @@ class TicketPage extends Component {
                     contact: this.state.customerContact
                 },
                 status: this.state.newStatus,
-                open: (this.state.newOpen === 'Open') ? true : false,
                 assignedTo: {
                     id: users[assignedToIndex]._id,
                     name: this.state.assignedTo
@@ -148,7 +144,7 @@ class TicketPage extends Component {
                             <tr>
                                 <td>Title</td>
                                 <td>Status</td>
-                                <td>Open?</td>
+                                <td>State</td>
                                 <td>Author</td> 
                                 <td>Created</td>
                                 <td>Last Modified</td>
