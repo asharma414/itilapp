@@ -6,6 +6,6 @@ const resolveSchema = new mongoose.Schema({
     close_ref: { type: mongoose.Schema.Types.ObjectId, ref: 'Ticket'}
 });
 
-resolveSchema.index({ createdAt: 1}, { expireAfterSeconds: 300})
+resolveSchema.index({ createdAt: 1}, { expireAfterSeconds: 259200 })
 
 module.exports = mongoose.model('TicketResolve', resolveSchema)
