@@ -43,7 +43,6 @@ class TicketPage extends Component {
                     status: res.data.status,
                     newStatus: res.data.status,
                     open: (res.data.open === true) ? 'Open' : 'Closed',
-                    newOpen: (res.data.open === true) ? 'Open' : 'Closed',
                     created: res.data.createdAt,
                     updated: res.data.updatedAt,
                     description: res.data.description,
@@ -191,15 +190,6 @@ class TicketPage extends Component {
                                         <option>In Progress</option>
                                         <option>Cancelled</option>
                                         <option>Resolved</option>
-                                    </Form.Control>
-                                </Form.Group>
-                            </Col>
-                            <Col>
-                                <Form.Group controlId='newOpen'>
-                                    <Form.Label>State</Form.Label>
-                                    <Form.Control as='select' value={this.state.newOpen} onChange={this.onChange}>
-                                        <option>Open</option>
-                                        <option>Closed</option>
                                     </Form.Control>
                                 </Form.Group>
                             </Col>
