@@ -42,8 +42,8 @@ router.get('/', auth, async (req, res) => {
                         })
                     }
                 }
+                res.json(tickets);
             }
-            res.json(tickets);
         }
             )} catch(e) {
             console.log(e);
