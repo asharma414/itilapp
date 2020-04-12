@@ -1,7 +1,6 @@
 const router = require('express').Router();
 const Ticket = require('../models/ticket.model');
 const Comment = require('../models/comment.model');
-const TicketResolve = require('../models/ticketResolve.model');
 const auth = require('../middleware/auth');
 
 
