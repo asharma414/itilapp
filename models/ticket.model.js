@@ -6,10 +6,11 @@ const ticketSchema = new mongoose.Schema({
     customer: { name: { type: String, trim: true }, contact: { type: String, trim: true } },
     status: { type: String, default: 'New' },
     open: { type: Boolean, default: true },
-    closed: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'TicketResolve'
-        },
+    closeAt: { type: Date, default: null },
+    // closed: {
+    //         type: mongoose.Schema.Types.ObjectId,
+    //         ref: 'TicketResolve'
+    //     },
     author: {
         id : {
             type: mongoose.Schema.Types.ObjectId,

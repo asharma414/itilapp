@@ -73,6 +73,7 @@ class TicketPage extends Component {
     }
 
     commentPost = async (text) => {
+        if(text.length > 0){
         const { id } = this.props.match.params;
         const userId = this.props.auth.user.id;
         const username = this.props.auth.user.name;
@@ -85,6 +86,7 @@ class TicketPage extends Component {
         }
         await this.props.addComment(id, newComment);
         window.location.reload();
+    }
     }
 
     ticketSubmit = async (e) => {
@@ -119,6 +121,10 @@ class TicketPage extends Component {
     commentSubmit = (e) => {
         e.preventDefault();
         this.commentPost(this.state.commentText)
+    }
+
+    isClosed = () => {
+        return this.state.open === 'Closed' ? "disabled" : "";
     }
 
     render() {
@@ -166,13 +172,13 @@ class TicketPage extends Component {
                             <Col>
                                 <Form.Group controlId="customerName">
                                     <Form.Label>Customer Name</Form.Label>
-                                    <Form.Control type='text' onChange={this.onChange} value={this.state.customerName} placeholder="Customer's Name" />
+                                    <Form.Control type='text' onChange={this.onChange} value={this.state.customerName} placeholder="Customer's Name" disabled={this.isClosed()} />
                                 </Form.Group>
                             </Col>
                             <Col>
                                 <Form.Group controlId="customerContact">
                                     <Form.Label>Customer Contact</Form.Label>
-                                    <Form.Control type='text' onChange={this.onChange} value={this.state.customerContact} placeholder="Customer's Contact Info" />
+                                    <Form.Control type='text' onChange={this.onChange} value={this.state.customerContact} placeholder="Customer's Contact Info" disabled={this.isClosed()} />
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -180,7 +186,7 @@ class TicketPage extends Component {
                             <Col>
                                 <Form.Group controlId='newStatus'>
                                     <Form.Label>Status</Form.Label>
-                                    <Form.Control as='select' value={this.state.newStatus} onChange={this.onChange}>
+                                    <Form.Control as='select' value={this.state.newStatus} onChange={this.onChange} disabled={this.isClosed()}>
                                         <option>New</option>
                                         <option>Awaiting Customer Feedback</option>
                                         <option>In Progress</option>
@@ -192,21 +198,21 @@ class TicketPage extends Component {
                         </Row>
                         <Form.Group controlId='assignedTo'>
                             <Form.Label>Assigned To</Form.Label>
-                            <Form.Control  list='datalist1' type='text' value={this.state.assignedTo} onChange={this.onChange} required placeholder='Assign ticket to user' />
+                            <Form.Control  list='datalist1' type='text' value={this.state.assignedTo} onChange={this.onChange} required placeholder='Assign ticket to user' disabled={this.isClosed()} />
                         </Form.Group>
                         <Form.Group controlId='description'>
                             <Form.Label>Description</Form.Label>
-                            <Form.Control as='textarea' value={this.state.description} onChange={this.onChange} required placeholder="Ticket description" />
+                            <Form.Control as='textarea' value={this.state.description} onChange={this.onChange} required placeholder="Ticket description" disabled={this.isClosed()} />
                         </Form.Group>
-                        <Button variant='outline-primary' type='submit'>Submit</Button>
+                        <Button variant='outline-primary' type='submit' disabled={this.isClosed()} >Submit</Button>
                     </Form>
                     <div className='my-4 commentForm'>
                         <Form onSubmit={this.commentSubmit}>
                         <Form.Group controlId='commentText'>
                             <Form.Label>New Comment</Form.Label>
-                            <Form.Control as='textarea' value={this.state.newComment} onChange={this.onChange} placeholder="Enter ticket description" />
+                            <Form.Control as='textarea' value={this.state.newComment} onChange={this.onChange} placeholder="Enter comments"  disabled={this.isClosed()} />
                         </Form.Group>
-                        <Button variant='outline-secondary' type='submit'>Post Comment</Button>
+                        <Button variant='outline-secondary' type='submit' disabled={this.isClosed()}>Post Comment</Button>
                         </Form>
                     </div>
                         {this.state.comments.map(comment =>

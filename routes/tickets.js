@@ -22,31 +22,31 @@ router.get('/', auth, async (req, res) => {
                     res.json([])
                 } else {
                     for (let i = 0; i < tickets.length; i++) {
-                        if (tickets[i].status === 'Resolved' && tickets[i].closed === null && tickets[i].open === true) {
+                        if (tickets[i].closeAt != null && Date.now() > tickets[i].closeAt) {
                             Ticket.findOneAndUpdate({ _id: tickets[i]._id }, { open: false }, (err, result) => {
-                            })
-                            Ticket.findById(tickets[i]._id, (err, ticket) => {
                                 if(err) {
-                                    res.status(404).json({ msg: 'Ticket not found'})
+                                    res.status(404).json({ msg: 'Ticket not found' })
                                 } else {
                                     Comment.create({ text: 'State is <i>Closed</i> was <i>Open</i>', author: { name: 'System' } }, (err, comment) => {
                                         if(err) {
                                             res.status(500).json({ msg: 'Server error' })
                                         } else {
+                                            comment.createdAt = result.closeAt;
                                             comment.save();
                                             //save comment
-                                            ticket.comments.push(comment);
-                                            ticket.save();
+                                            result.comments.push(comment);
+                                            result.closeAt = null;
+                                            result.save();
                                         }
-                                    });
-                                }
-                            });
-                        }
+                                })
+                            }
+                        })
                     }
-                    res.json(tickets);
                 }
-            })
-        } catch(e) {
+            }
+            res.json(tickets);
+        }
+            )} catch(e) {
             console.log(e);
         }
     } else if (req.query.name.length > 0) {
@@ -88,17 +88,11 @@ router.put('/:id', auth, (req, res) => {
             res.status(404).json({ success: false })
         } else {
             if(req.body.status === 'Resolved' || req.body.status === 'Cancelled') {
-                let newResolve = new TicketResolve({
-                    close_ref: updatedTicket._id
-                });
-                newResolve.save((err, result) => {
-                })
-                Ticket.findOneAndUpdate({ _id: updatedTicket._id }, { closed: newResolve._id }, (err, updatedTicket) => {
-                    if(err){
-                        console.log(err);
-                    }
-                })
+                updatedTicket.closeAt = Date.now()+600000;
+            } else if((updatedTicket.status === 'Resolved' || updatedTicket.status === 'Cancelled') && (req.body.status != 'Resolved' || req.body.status != 'Cancelled')) {
+                updatedTicket.closeAt = null;
             }
+            updatedTicket.save();
             res.json('ticket updated');
         }
     });
