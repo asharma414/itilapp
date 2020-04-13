@@ -170,7 +170,7 @@ class TicketPage extends Component {
     }
 
     isClosed = () => {
-        return this.state.open === 'Closed' ? "disabled" : "";
+        return this.state.original.open === 'Closed' ? "disabled" : "";
     }
 
     render() {
