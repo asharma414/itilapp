@@ -14,22 +14,35 @@ const sanitizer = dompurify.sanitize;
 
 class TicketPage extends Component {
     state = {
-        status: '',
-        created: '',
-        open: '',
-        updated: '',
-        title: '',
-        description: '',
-        customerName: '',
-        customerContact: '',
-        author: '',
-        newStatus: '',
-        newOpen: '',
-        comments:  [],
-        loading: false,
-        commentText: '',
-        assignedTo: '',
+        updates: {
+            status: '',
+            created: '',
+            open: '',
+            updated: '',
+            title: '',
+            description: '',
+            customerName: '',
+            customerContact: '',
+            author: '',
+            comments:  [],
+            assignedTo: ''
+        },
         commentToggle: false,
+        original: {
+            status: '',
+            created: '',
+            open: '',
+            updated: '',
+            title: '',
+            description: '',
+            customerName: '',
+            customerContact: '',
+            author: '',
+            comments:  [],
+            assignedTo: ''
+        },
+        commentText: '',
+        loading: false,
         errors: {}
     }
 
@@ -39,18 +52,32 @@ class TicketPage extends Component {
             .get(`/api/tickets/${id}`)
             .then(res => 
                 this.setState({
-                    title: res.data.title,
-                    status: res.data.status,
-                    newStatus: res.data.status,
-                    open: (res.data.open === true) ? 'Open' : 'Closed',
-                    created: res.data.createdAt,
-                    updated: res.data.updatedAt,
-                    description: res.data.description,
-                    customerName: ((res.data || {}).customer || {}).name,
-                    customerContact: ((res.data || {}).customer || {}).contact,
-                    comments: res.data.comments,
-                    author: ((res.data || {}).author || {}).name,
-                    assignedTo: ((res.data || {}).assignedTo || {}).name,
+                    updates: {
+                        title: res.data.title,
+                        status: res.data.status,
+                        open: (res.data.open === true) ? 'Open' : 'Closed',
+                        created: res.data.createdAt,
+                        updated: res.data.updatedAt,
+                        description: res.data.description,
+                        customerName: ((res.data || {}).customer || {}).name,
+                        customerContact: ((res.data || {}).customer || {}).contact,
+                        comments: res.data.comments,
+                        author: ((res.data || {}).author || {}).name,
+                        assignedTo: ((res.data || {}).assignedTo || {}).name
+                    },
+                    original: {
+                        title: res.data.title,
+                        status: res.data.status,
+                        open: (res.data.open === true) ? 'Open' : 'Closed',
+                        created: res.data.createdAt,
+                        updated: res.data.updatedAt,
+                        description: res.data.description,
+                        customerName: ((res.data || {}).customer || {}).name,
+                        customerContact: ((res.data || {}).customer || {}).contact,
+                        comments: res.data.comments,
+                        author: ((res.data || {}).author || {}).name,
+                        assignedTo: ((res.data || {}).assignedTo || {}).name,
+                    },
                     loading: false
                 })
             )
@@ -69,7 +96,12 @@ class TicketPage extends Component {
     }
 
     onChange = (e) => {
-        this.setState({ [e.target.id] : e.target.value })
+        const { updates } = { ...this.state };
+
+        const currentState = updates;
+        const { id, value } = e.target;
+        currentState[id] = value;
+        this.setState({ updates: currentState })
     }
 
     commentPost = async (text) => {
@@ -89,33 +121,47 @@ class TicketPage extends Component {
     }
     }
 
+    arrayMatch = (original, updates) => {
+        if (original.length !== updates.length) {
+            return false;
+        }
+        for (let i = 0; i < original.length; i++) {
+            if (original[i] !== updates[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     ticketSubmit = async (e) => {
         e.preventDefault();
-        const { users } = this.props.user;
-        let userArr = users.map(user => user.name);
-        if (userArr.includes(this.state.assignedTo)){
-            let assignedToIndex = userArr.indexOf(this.state.assignedTo)
-            const { id } = this.props.match.params;
-            if (this.state.newStatus !== this.state.status) {
-                this.commentPost(`Status is <em>${this.state.newStatus}</em> was <em>${this.state.status}</em>`)
-            }
-            const updatedTicket = {
-                description: this.state.description,
-                customer: {
-                    name: this.state.customerName,
-                    contact: this.state.customerContact
-                },
-                status: this.state.newStatus,
-                assignedTo: {
-                    id: users[assignedToIndex]._id,
-                    name: this.state.assignedTo
+        if (!this.arrayMatch(Object.values(this.state.updates), Object.values(this.state.original))) {
+            const { users } = this.props.user;
+            let userArr = users.map(user => user.name);
+            if (userArr.includes(this.state.updates.assignedTo)){
+                let assignedToIndex = userArr.indexOf(this.state.updates.assignedTo)
+                const { id } = this.props.match.params;
+                if (this.state.updates.status !== this.state.original.status) {
+                    this.commentPost(`Status is <em>${this.state.updates.status}</em> was <em>${this.state.original.status}</em>`)
                 }
+                const updatedTicket = {
+                    description: this.state.updates.description,
+                    customer: {
+                        name: this.state.updates.customerName,
+                        contact: this.state.updates.customerContact
+                    },
+                    status: this.state.updates.status,
+                    assignedTo: {
+                        id: users[assignedToIndex]._id,
+                        name: this.state.updates.assignedTo
+                    }
+                }
+                await this.props.updateTicket(id, updatedTicket);
+            } else {
+                alert('Invalid assigned to user')
             }
-            await this.props.updateTicket(id, updatedTicket);
-        } else {
-            alert('Invalid assigned to user')
-        }
-        window.location.reload();
+            window.location.reload();
+    }
     }
 
     commentSubmit = (e) => {
@@ -158,12 +204,12 @@ class TicketPage extends Component {
                         </thead>
                         <tbody>
                             <tr>
-                                <td>{this.state.title}</td>
-                                <td>{this.state.status}</td>
-                                <td>{(this.state.open === 'Open') ? 'Open' : 'Closed'}</td>
-                                <td>{this.state.author}</td>
-                                <td>{this.state.created.substring(0,19)}</td>
-                                <td>{this.state.updated.substring(0,19)}</td>
+                                <td>{this.state.original.title}</td>
+                                <td>{this.state.original.status}</td>
+                                <td>{(this.state.original.open === 'Open') ? 'Open' : 'Closed'}</td>
+                                <td>{this.state.original.author}</td>
+                                <td>{this.state.original.created.substring(0,19)}</td>
+                                <td>{this.state.original.updated.substring(0,19)}</td>
                             </tr>
                         </tbody>
                     </Table>
@@ -172,21 +218,21 @@ class TicketPage extends Component {
                             <Col>
                                 <Form.Group controlId="customerName">
                                     <Form.Label>Customer Name</Form.Label>
-                                    <Form.Control type='text' onChange={this.onChange} value={this.state.customerName} placeholder="Customer's Name" disabled={this.isClosed()} />
+                                    <Form.Control type='text' onChange={this.onChange} value={this.state.updates.customerName} placeholder="Customer's Name" disabled={this.isClosed()} />
                                 </Form.Group>
                             </Col>
                             <Col>
                                 <Form.Group controlId="customerContact">
                                     <Form.Label>Customer Contact</Form.Label>
-                                    <Form.Control type='text' onChange={this.onChange} value={this.state.customerContact} placeholder="Customer's Contact Info" disabled={this.isClosed()} />
+                                    <Form.Control type='text' onChange={this.onChange} value={this.state.updates.customerContact} placeholder="Customer's Contact Info" disabled={this.isClosed()} />
                                 </Form.Group>
                             </Col>
                         </Row>
                         <Row>
                             <Col>
-                                <Form.Group controlId='newStatus'>
+                                <Form.Group controlId='status'>
                                     <Form.Label>Status</Form.Label>
-                                    <Form.Control as='select' value={this.state.newStatus} onChange={this.onChange} disabled={this.isClosed()}>
+                                    <Form.Control as='select' value={this.state.updates.status} onChange={this.onChange} disabled={this.isClosed()}>
                                         <option>New</option>
                                         <option>Awaiting Customer Feedback</option>
                                         <option>In Progress</option>
@@ -198,11 +244,11 @@ class TicketPage extends Component {
                         </Row>
                         <Form.Group controlId='assignedTo'>
                             <Form.Label>Assigned To</Form.Label>
-                            <Form.Control  list='datalist1' type='text' value={this.state.assignedTo} onChange={this.onChange} required placeholder='Assign ticket to user' disabled={this.isClosed()} />
+                            <Form.Control  list='datalist1' type='text' value={this.state.updates.assignedTo} onChange={this.onChange} required placeholder='Assign ticket to user' disabled={this.isClosed()} />
                         </Form.Group>
                         <Form.Group controlId='description'>
                             <Form.Label>Description</Form.Label>
-                            <Form.Control as='textarea' value={this.state.description} onChange={this.onChange} required placeholder="Ticket description" disabled={this.isClosed()} />
+                            <Form.Control as='textarea' value={this.state.updates.description} onChange={this.onChange} required placeholder="Ticket description" disabled={this.isClosed()} />
                         </Form.Group>
                         <Button variant='outline-primary' type='submit' disabled={this.isClosed()} >Submit</Button>
                     </Form>
@@ -215,7 +261,7 @@ class TicketPage extends Component {
                         <Button variant='outline-secondary' type='submit' disabled={this.isClosed()}>Post Comment</Button>
                         </Form>
                     </div>
-                        {this.state.comments.map(comment =>
+                        {this.state.updates.comments.map(comment =>
                             <div key={comment._id} className='mt-3 card-footer'> 
                                 <div className='row'>
                                         <div className='col-md-12'>

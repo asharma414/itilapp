@@ -87,7 +87,7 @@ router.put('/:id', auth, (req, res) => {
             res.status(404).json({ success: false })
         } else {
             if(req.body.status === 'Resolved' || req.body.status === 'Cancelled') {
-                updatedTicket.closeAt = Date.now()+2.592e8;
+                updatedTicket.closeAt = Date.now()+300000;
             } else if((updatedTicket.status === 'Resolved' || updatedTicket.status === 'Cancelled') && (req.body.status != 'Resolved' || req.body.status != 'Cancelled')) {
                 updatedTicket.closeAt = null;
             }
