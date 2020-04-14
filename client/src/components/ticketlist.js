@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getTickets } from '../actions/ticketActions';
+import Pagination from './pagination';
 import PropTypes from 'prop-types';
 import { Table } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 import LoadingScreen from './loadingscreen';
 
 class TicketList extends Component {
+
+    state = {
+        currentPage: 1,
+        ticketsPerPage: 10
+    }
 
     componentDidMount() {
         this.props.getTickets('', '');
@@ -16,9 +22,16 @@ class TicketList extends Component {
         this.props.history.push(path);
     }
 
+    paginate = (pageNumber) => {
+        this.setState({currentPage: pageNumber})
+    }
+
     render() {
         const { tickets } = this.props.ticket;
         const { loading } = this.props.ticket;
+        const indexOfLastTicket = this.state.currentPage * this.state.ticketsPerPage;
+        const indexOfFirstTicket = indexOfLastTicket - this.state.ticketsPerPage;
+        const currentTickets = tickets.slice(indexOfFirstTicket, indexOfLastTicket)
         if (loading === true) {
             return (
                 <div className='container'>
@@ -48,7 +61,7 @@ class TicketList extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                        {tickets.map(ticket => (
+                        {currentTickets.map(ticket => (
                             <tr className='ticket' key={ticket._id} onClick={() => this.showDetails(`/tickets/${ticket._id}`)}>
                                     <td>{ticket.title}</td>
                                     <td>{ticket.description.substring(0, 25)}</td>
@@ -62,6 +75,7 @@ class TicketList extends Component {
                         ))}
                         </tbody>
                     </Table>
+                    <Pagination ticketsPerPage={this.state.ticketsPerPage} totalTickets={tickets.length} paginate={this.paginate}/>
                 </div>
             );
         }   

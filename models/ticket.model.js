@@ -7,10 +7,6 @@ const ticketSchema = new mongoose.Schema({
     status: { type: String, default: 'New' },
     open: { type: Boolean, default: true },
     closeAt: { type: Date, default: null },
-    // closed: {
-    //         type: mongoose.Schema.Types.ObjectId,
-    //         ref: 'TicketResolve'
-    //     },
     author: {
         id : {
             type: mongoose.Schema.Types.ObjectId,
