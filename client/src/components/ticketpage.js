@@ -97,7 +97,6 @@ class TicketPage extends Component {
 
     onChange = (e) => {
         const { updates } = { ...this.state };
-
         const currentState = updates;
         const { id, value } = e.target;
         currentState[id] = value;
