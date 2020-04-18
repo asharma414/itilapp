@@ -15,6 +15,10 @@ class TicketList extends Component {
     }
 
     componentDidMount() {
+        const { page } = this.props.match.params;
+        if (page) {
+            this.setState({ currentPage: page })
+        }
         this.props.getTickets('', '');
     }
 
@@ -53,7 +57,7 @@ class TicketList extends Component {
                                 <th>Title</th>
                                 <th>Description</th>
                                 <th>Status</th>
-                                <th>Open?</th>
+                                <th>State</th>
                                 <th>Author</th> 
                                 <th>Assigned To</th>
                                 <th>Created</th>
@@ -62,7 +66,7 @@ class TicketList extends Component {
                         </thead>
                         <tbody>
                         {currentTickets.map(ticket => (
-                            <tr className='ticket' key={ticket._id} onClick={() => this.showDetails(`/tickets/${ticket._id}`)}>
+                            <tr className='ticket' key={ticket._id} onClick={() => this.showDetails(`/ticket/${ticket._id}`)}>
                                     <td>{ticket.title}</td>
                                     <td>{ticket.description.substring(0, 25)}</td>
                                     <td>{ticket.status}</td>
@@ -75,7 +79,7 @@ class TicketList extends Component {
                         ))}
                         </tbody>
                     </Table>
-                    <Pagination ticketsPerPage={this.state.ticketsPerPage} totalTickets={tickets.length} paginate={this.paginate}/>
+                    <Pagination ticketsPerPage={this.state.ticketsPerPage} totalTickets={tickets.length} currentPage={this.state.currentPage} paginate={this.paginate}/>
                 </div>
             );
         }   

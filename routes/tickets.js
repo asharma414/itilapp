@@ -34,6 +34,7 @@ router.get('/', auth, async (req, res) => {
                                             comment.save();
                                             //save comment
                                             result.comments.push(comment);
+                                            result.updatedAt = result.closeAt
                                             result.closeAt = null;
                                             result.save();
                                         }

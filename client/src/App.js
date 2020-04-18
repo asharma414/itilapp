@@ -47,8 +47,8 @@ function App() {
               <Route path='/login' exact component={Login} />
               <Route path='/register' exact component={Register} />
               <Route path='/verify/:id' exact component={ActivatedScreen} />
-              <PrivateRoute exact path='/tickets' component={TicketList} />
-              <PrivateRoute exact path='/tickets/:id' component={TicketPage} />
+              <PrivateRoute exact path='/tickets/:page?' component={TicketList} />
+              <PrivateRoute exact path='/ticket/:id' component={TicketPage} />
               <PrivateRoute exact path='/mytickets' component={TicketList} />
               <PrivateRoute exact path='/new' component={NewTicket} />
               <Route component={Page404} />
