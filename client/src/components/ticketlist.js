@@ -31,7 +31,9 @@ class TicketList extends Component {
     }
 
     render() {
+        const { page } = this.props.match.params;
         const { tickets } = this.props.ticket;
+        const limit = Math.ceil(tickets.length/this.state.ticketsPerPage);
         const { loading } = this.props.ticket;
         const indexOfLastTicket = this.state.currentPage * this.state.ticketsPerPage;
         const indexOfFirstTicket = indexOfLastTicket - this.state.ticketsPerPage;
@@ -42,10 +44,10 @@ class TicketList extends Component {
                     <LoadingScreen />
                 </div>
             )
-        } else if (tickets.length < 1) {
+        } else if (tickets.length < 1 || (page < 1 || page > limit)) {
             return (
                 <div>
-                    No results found
+                    No results found or invalid page number
                 </div>
             )
         } else {
