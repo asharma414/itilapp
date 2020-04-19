@@ -20,7 +20,7 @@
   100% { transform: rotate(360deg); }
 }
 
-.ticket {
+.ticket, .page-item {
   cursor: pointer;
 }
 
