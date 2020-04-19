@@ -5,6 +5,9 @@ export default function Pagination({ ticketsPerPage, totalTickets, currentPage, 
     for(let i = 1; i <= Math.ceil(totalTickets/ticketsPerPage); i++) {
         pageNumbers.push(i);
     }
+    if (currentPage > Math.ceil(totalTickets/ticketsPerPage) || currentPage < 1) {
+        paginate(1);
+    }
     const navigate = (number) => {
         paginate(number)
         window.history.pushState(null, null, `/tickets/${number}`)

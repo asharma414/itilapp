@@ -15,10 +15,6 @@ class TicketList extends Component {
     }
 
     componentDidMount() {
-        const { page } = this.props.match.params;
-        if (page) {
-            this.setState({ currentPage: page })
-        }
         this.props.getTickets('', '');
     }
 

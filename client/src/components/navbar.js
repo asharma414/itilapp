@@ -30,7 +30,7 @@ class Navigation extends Component {
 
     onSubmit = async (e) => { 
         e.preventDefault();
-        await this.props.history.push('/tickets');
+        await this.props.history.push('/tickets/1');
         this.props.getTickets(this.state.term, '')
     }
 

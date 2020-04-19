@@ -11,6 +11,7 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 tickets: action.payload,
+                page: 1,
                 loading: false
             };
         case UPDATE_TICKET:
