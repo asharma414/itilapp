@@ -14,6 +14,7 @@ const sanitizer = dompurify.sanitize;
 
 class TicketPage extends Component {
     state = {
+        commentText: '',
         updates: {
             status: '',
             created: '',
@@ -26,9 +27,7 @@ class TicketPage extends Component {
             author: '',
             comments:  [],
             assignedTo: '',
-            commentText: '',
         },
-        commentToggle: false,
         original: {
             status: '',
             created: '',
@@ -99,8 +98,12 @@ class TicketPage extends Component {
         const { updates } = { ...this.state };
         const currentState = updates;
         const { id, value } = e.target;
-        currentState[id] = value;
-        this.setState({ updates: currentState })
+        if (id == 'commentText'){
+            this.setState({ commentText: value })
+        } else {
+            currentState[id] = value;
+            this.setState({ updates: currentState })
+        }
     }
 
     commentPost = async (text) => {
@@ -166,7 +169,7 @@ class TicketPage extends Component {
 
     commentSubmit = (e) => {
         e.preventDefault();
-        this.commentPost(this.state.updates.commentText)
+        this.commentPost(this.state.commentText)
     }
 
     isClosed = () => {
@@ -256,7 +259,7 @@ class TicketPage extends Component {
                         <Form onSubmit={this.commentSubmit}>
                         <Form.Group controlId='commentText'>
                             <Form.Label>New Comment</Form.Label>
-                            <Form.Control as='textarea' value={this.state.updates.commentText} onChange={this.onChange} placeholder="Enter comments"  disabled={this.isClosed()} />
+                            <Form.Control as='textarea' value={this.state.commentText} onChange={this.onChange} placeholder="Enter comments"  disabled={this.isClosed()} />
                         </Form.Group>
                         <Button variant='outline-secondary' type='submit' disabled={this.isClosed()}>Post Comment</Button>
                         </Form>
