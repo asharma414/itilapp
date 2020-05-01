@@ -25,7 +25,8 @@ class TicketPage extends Component {
             customerContact: '',
             author: '',
             comments:  [],
-            assignedTo: ''
+            assignedTo: '',
+            commentText: '',
         },
         commentToggle: false,
         original: {
@@ -41,7 +42,6 @@ class TicketPage extends Component {
             comments:  [],
             assignedTo: ''
         },
-        commentText: '',
         loading: false,
         errors: {}
     }
@@ -104,6 +104,7 @@ class TicketPage extends Component {
     }
 
     commentPost = async (text) => {
+        console.log(text.length)
         if(text.length > 0){
         const { id } = this.props.match.params;
         const userId = this.props.auth.user.id;
@@ -165,7 +166,7 @@ class TicketPage extends Component {
 
     commentSubmit = (e) => {
         e.preventDefault();
-        this.commentPost(this.state.commentText)
+        this.commentPost(this.state.updates.commentText)
     }
 
     isClosed = () => {
@@ -255,7 +256,7 @@ class TicketPage extends Component {
                         <Form onSubmit={this.commentSubmit}>
                         <Form.Group controlId='commentText'>
                             <Form.Label>New Comment</Form.Label>
-                            <Form.Control as='textarea' value={this.state.newComment} onChange={this.onChange} placeholder="Enter comments"  disabled={this.isClosed()} />
+                            <Form.Control as='textarea' value={this.state.updates.commentText} onChange={this.onChange} placeholder="Enter comments"  disabled={this.isClosed()} />
                         </Form.Group>
                         <Button variant='outline-secondary' type='submit' disabled={this.isClosed()}>Post Comment</Button>
                         </Form>

@@ -23,7 +23,6 @@ export default function Pagination({ ticketsPerPage, totalTickets, currentPage, 
                         <a onClick={() => navigate(number)} className='page-link'>{number}</a>
                     </li>
                 ))}
-                {/* I had to use the paginate function for the next button to work. But it double decrements if I use paginate on previous button */}
                 <li className={ currentPage === pageNumbers.length ? 'd-none' : 'page-item' }><a onClick={() => navigate(++currentPage)} className='page-link'>Next</a></li>
                 </ul>
             </nav>
