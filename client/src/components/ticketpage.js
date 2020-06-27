@@ -8,8 +8,8 @@ import { findUser } from '../actions/userActions';
 import PropTypes from 'prop-types';
 import LoadingScreen from './loadingscreen';
 import { Form, Button, Table, Row, Col } from 'react-bootstrap';
-import dompurify from 'dompurify';
 import moment from 'moment';
+import dompurify from 'dompurify';
 const sanitizer = dompurify.sanitize;
 
 class TicketPage extends Component {
@@ -107,7 +107,6 @@ class TicketPage extends Component {
     }
 
     commentPost = async (text) => {
-        console.log(text.length)
         if(text.length > 0){
         const { id } = this.props.match.params;
         const userId = this.props.auth.user.id;
@@ -211,8 +210,8 @@ class TicketPage extends Component {
                                 <td>{this.state.original.status}</td>
                                 <td>{(this.state.original.open === 'Open') ? 'Open' : 'Closed'}</td>
                                 <td>{this.state.original.author}</td>
-                                <td>{this.state.original.created.substring(0,19)}</td>
-                                <td>{this.state.original.updated.substring(0,19)}</td>
+                                <td>{moment(this.state.original.created).format('lll')}</td>
+                                <td>{moment(this.state.original.updated).format('lll')}</td>
                             </tr>
                         </tbody>
                     </Table>

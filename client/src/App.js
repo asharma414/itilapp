@@ -36,9 +36,10 @@ if (localStorage.jwtToken) {
   }
 }
 
-function App() {
-  return (
-    <Provider store={store}>
+export default class App extends React.Component {
+  render() {
+    return (
+      <Provider store={store}>
       <div className='container'>
         <Router>
           <Navigation />
@@ -56,7 +57,6 @@ function App() {
         </Router>
       </div>
     </Provider>
-  );
+    )
+  }
 }
-
-export default App;

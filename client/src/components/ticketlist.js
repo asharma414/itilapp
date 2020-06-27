@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { Table } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 import LoadingScreen from './loadingscreen';
+import moment from 'moment';
 
 class TicketList extends Component {
 
@@ -49,9 +50,10 @@ class TicketList extends Component {
         } else {
             return (
                 <div className='container'>
-                    <Table className='my-4' striped bordered hover responsive='md'>
+                    <Table className='my-4' bordered hover responsive='md'>
                         <thead>
                             <tr>
+                                <th>Ticket #</th>
                                 <th>Title</th>
                                 <th>Description</th>
                                 <th>Status</th>
@@ -65,14 +67,15 @@ class TicketList extends Component {
                         <tbody>
                         {currentTickets.map(ticket => (
                             <tr className='ticket' key={ticket._id} onClick={() => this.showDetails(`/ticket/${ticket._id}`)}>
+                                    <td>{ticket.id}</td>
                                     <td>{ticket.title}</td>
                                     <td>{ticket.description.substring(0, 25)}</td>
                                     <td>{ticket.status}</td>
                                     <td>{(ticket.open === true) ? 'Open' : 'Closed'}</td>
                                     <td>{ticket.author.name}</td>
                                     <td>{ticket.assignedTo.name}</td>
-                                    <td>{ticket.createdAt.substring(0,19)}</td>
-                                    <td>{ticket.updatedAt.substring(0,19)}</td>
+                                    <td>{moment(ticket.createdAt).format('lll')}</td>
+                                    <td>{moment(ticket.updatedAt).format('lll')}</td>
                             </tr>
                         ))}
                         </tbody>
