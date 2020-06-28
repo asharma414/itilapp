@@ -54,7 +54,7 @@ class TicketPage extends Component {
                     updates: {
                         title: res.data.title,
                         status: res.data.status,
-                        open: (res.data.open === true) ? 'Open' : 'Closed',
+                        open: res.data.open,
                         created: res.data.createdAt,
                         updated: res.data.updatedAt,
                         description: res.data.description,
@@ -67,7 +67,7 @@ class TicketPage extends Component {
                     original: {
                         title: res.data.title,
                         status: res.data.status,
-                        open: (res.data.open === true) ? 'Open' : 'Closed',
+                        open: res.data.open,
                         created: res.data.createdAt,
                         updated: res.data.updatedAt,
                         description: res.data.description,
@@ -172,7 +172,7 @@ class TicketPage extends Component {
     }
 
     isClosed = () => {
-        return this.state.original.open === 'Closed' ? "disabled" : "";
+        return !this.state.original.open ? "disabled" : "";
     }
 
     render() {
@@ -208,7 +208,7 @@ class TicketPage extends Component {
                             <tr>
                                 <td>{this.state.original.title}</td>
                                 <td>{this.state.original.status}</td>
-                                <td>{(this.state.original.open === 'Open') ? 'Open' : 'Closed'}</td>
+                                <td>{this.state.original.open ? 'Open' : 'Closed'}</td>
                                 <td>{this.state.original.author}</td>
                                 <td>{moment(this.state.original.created).format('lll')}</td>
                                 <td>{moment(this.state.original.updated).format('lll')}</td>

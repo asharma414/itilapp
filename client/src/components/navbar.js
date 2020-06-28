@@ -51,6 +51,7 @@ class Navigation extends Component {
                     <Nav.Link className={ isAuthenticated === true ? '' : 'd-none' } onClick={this.myTickets}>My Tickets</Nav.Link>
                     <Nav.Link className={ isAuthenticated === true ? '' : 'd-none' } onClick={this.onLogoutClick}>Logout</Nav.Link>
                     </Nav>
+                    <span className={this.props.auth.user.name ? 'navbar-text' : ''}>{this.props.auth.user.name ? this.props.auth.user.name : null}</span>
                 </Navbar.Collapse>
             </Navbar>
         )

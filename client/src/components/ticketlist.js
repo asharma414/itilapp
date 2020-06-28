@@ -71,7 +71,7 @@ class TicketList extends Component {
                                     <td>{ticket.title}</td>
                                     <td>{ticket.description.substring(0, 25)}</td>
                                     <td>{ticket.status}</td>
-                                    <td>{(ticket.open === true) ? 'Open' : 'Closed'}</td>
+                                    <td>{ticket.open ? 'Open' : 'Closed'}</td>
                                     <td>{ticket.author.name}</td>
                                     <td>{ticket.assignedTo.name}</td>
                                     <td>{moment(ticket.createdAt).format('lll')}</td>

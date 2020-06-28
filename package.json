@@ -27,7 +27,7 @@
         "nodemailer-express-handlebars": "^4.0.0",
         "passport": "^0.4.1",
         "passport-jwt": "^4.0.0",
-        "rxjs": "^6.5.5",
+        "rxjs": "^6.5.5", 
         "validator": "^10.11.0"
     }
 }
