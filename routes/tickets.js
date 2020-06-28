@@ -16,7 +16,6 @@ router.get('/', auth, async (req, res) => {
                     { title: { $regex: regex } },
                     { description: { $regex: regex } },
                     { 'author.name': { $regex: regex } },
-                    { description: { $regex: regex } }, 
                     { number: { $regex: regex } }
                 ]
             }).populate('closed').exec((err, tickets) => {
