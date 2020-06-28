@@ -66,7 +66,7 @@ router.get('/', auth, async (req, res) => {
 router.post('/create', auth, async (req, res) => {
     let retry = true;
     let number = 'INC' + Math.floor(Math.random() * 10000000)
-    const data = {...req.body, number: number }
+    const data = { ...req.body, number: number }
     while (retry) {
         const newTicket = new Ticket(data);
         try {
