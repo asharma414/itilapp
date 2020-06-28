@@ -27,6 +27,7 @@ class TicketPage extends Component {
             author: '',
             comments:  [],
             assignedTo: '',
+            number: ''
         },
         original: {
             status: '',
@@ -39,7 +40,8 @@ class TicketPage extends Component {
             customerContact: '',
             author: '',
             comments:  [],
-            assignedTo: ''
+            assignedTo: '',
+            number: ''
         },
         loading: false,
         errors: {}
@@ -58,6 +60,7 @@ class TicketPage extends Component {
                         created: res.data.createdAt,
                         updated: res.data.updatedAt,
                         description: res.data.description,
+                        number: res.data.number,
                         customerName: ((res.data || {}).customer || {}).name,
                         customerContact: ((res.data || {}).customer || {}).contact,
                         comments: res.data.comments,
@@ -70,6 +73,7 @@ class TicketPage extends Component {
                         open: res.data.open,
                         created: res.data.createdAt,
                         updated: res.data.updatedAt,
+                        number: res.data.number,
                         description: res.data.description,
                         customerName: ((res.data || {}).customer || {}).name,
                         customerContact: ((res.data || {}).customer || {}).contact,
@@ -196,6 +200,7 @@ class TicketPage extends Component {
                     <Table className='my-4' bordered hover responsive='md'>
                         <thead>
                             <tr>
+                                <td>Ticket #</td>
                                 <td>Title</td>
                                 <td>Status</td>
                                 <td>State</td>
@@ -206,6 +211,7 @@ class TicketPage extends Component {
                         </thead>
                         <tbody>
                             <tr>
+                                <td>{this.state.original.number}</td>
                                 <td>{this.state.original.title}</td>
                                 <td>{this.state.original.status}</td>
                                 <td>{this.state.original.open ? 'Open' : 'Closed'}</td>

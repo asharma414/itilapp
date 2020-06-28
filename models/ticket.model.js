@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
-const mongooseCounter = require('mongoose-counters').default
 
-const autoIncrement = mongooseCounter(mongoose)
 const ticketSchema = new mongoose.Schema({
+    number: { type: String, unique: true, match: /INC[0-9]+/ },
     title: { type: String, required: true, trim: true },
     description: { type: String, required: true, trim: true },
     customer: { name: { type: String, trim: true }, contact: { type: String, trim: true } },
@@ -31,6 +30,6 @@ const ticketSchema = new mongoose.Schema({
     },
     { timestamps: true }
 );
-ticketSchema.plugin(autoIncrement, { incField: 'id'})
+
 
 module.exports = mongoose.model('Ticket', ticketSchema)

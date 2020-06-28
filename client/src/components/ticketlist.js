@@ -67,7 +67,7 @@ class TicketList extends Component {
                         <tbody>
                         {currentTickets.map(ticket => (
                             <tr className='ticket' key={ticket._id} onClick={() => this.showDetails(`/ticket/${ticket._id}`)}>
-                                    <td>{ticket.id}</td>
+                                    <td>{ticket.number}</td>
                                     <td>{ticket.title}</td>
                                     <td>{ticket.description.substring(0, 25)}</td>
                                     <td>{ticket.status}</td>

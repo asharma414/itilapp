@@ -14,7 +14,8 @@ router.get('/', auth, async (req, res) => {
             let tickets = await Ticket.find({
                 $or : [
                     { title: { $regex: regex } },
-                    { description: { $regex: regex } }
+                    { description: { $regex: regex } },
+                    { number: { $regex: regex } }
                 ]
             }).populate('closed').exec((err, tickets) => {
                 if (tickets.length < 1) {
@@ -63,14 +64,18 @@ router.get('/', auth, async (req, res) => {
 
 //create ticket
 router.post('/create', auth, async (req, res) => {
-    const data = req.body;
-    const newTicket = new Ticket(data);
-
-    try {
-        await newTicket.save();
-        res.json('ticket added');
-    } catch(e) {
-        console.log(e);
+    let retry = true;
+    let number = 'INC' + Math.floor(Math.random() * 9999999)
+    const data = {...req.body, number: number }
+    while (retry) {
+        const newTicket = new Ticket(data);
+        try {
+            await newTicket.save();
+            res.json('ticket added');
+            retry = false;
+        } catch(e) {
+            console.log(e);
+        }
     }
 });
 
