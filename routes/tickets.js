@@ -8,11 +8,11 @@ const auth = require('../middleware/auth');
 
 router.get('/', auth, async (req, res) => {
     //check if finding users tickets or searching by keyword
-    if(req.query.name.length === 0) {
+    if (req.query.name.length === 0) {
         const regex = new RegExp(escapeRegex(req.query.term), 'gi');
         try {
             let tickets = await Ticket.find({
-                $or : [
+                $or: [
                     { title: { $regex: regex } },
                     { description: { $regex: regex } },
                     { 'author.name': { $regex: regex } },
@@ -25,11 +25,11 @@ router.get('/', auth, async (req, res) => {
                     for (let i = 0; i < tickets.length; i++) {
                         if (tickets[i].closeAt != null && Date.now() > tickets[i].closeAt) {
                             Ticket.findOneAndUpdate({ _id: tickets[i]._id }, { open: false }, (err, result) => {
-                                if(err) {
+                                if (err) {
                                     res.status(404).json({ msg: 'Ticket not found' })
                                 } else {
                                     Comment.create({ text: 'State is <i>Closed</i> was <i>Open</i>', author: { name: 'System' } }, (err, comment) => {
-                                        if(err) {
+                                        if (err) {
                                             res.status(500).json({ msg: 'Server error' })
                                         } else {
                                             comment.createdAt = result.closeAt;
@@ -40,15 +40,16 @@ router.get('/', auth, async (req, res) => {
                                             result.closeAt = null;
                                             result.save();
                                         }
-                                })
-                            }
-                        })
+                                    })
+                                }
+                            })
+                        }
                     }
+                    res.json(tickets);
                 }
-                res.json(tickets);
             }
-        }
-            )} catch(e) {
+            )
+        } catch (e) {
             console.log(e);
         }
     } else if (req.query.name.length > 0) {
@@ -57,7 +58,7 @@ router.get('/', auth, async (req, res) => {
                 "assignedTo.name": req.query.name
             })
             res.json(tickets)
-        } catch(e) {
+        } catch (e) {
             console.log(e);
         }
     }
@@ -74,7 +75,7 @@ router.post('/create', auth, async (req, res) => {
             await newTicket.save();
             res.json('ticket added');
             retry = false;
-        } catch(e) {
+        } catch (e) {
             console.log(e);
         }
     }
@@ -89,13 +90,13 @@ router.get('/:id', auth, (req, res) => {
 
 //update ticket
 router.put('/:id', auth, (req, res) => {
-    Ticket.findOneAndUpdate({ _id: req.params.id }, { $set: req.body }, { useFindAndModify: false }, (err, updatedTicket) =>{
-        if(err){
+    Ticket.findOneAndUpdate({ _id: req.params.id }, { $set: req.body }, { useFindAndModify: false }, (err, updatedTicket) => {
+        if (err) {
             res.status(404).json({ success: false })
         } else {
-            if(req.body.status === 'Resolved' || req.body.status === 'Cancelled') {
-                updatedTicket.closeAt = Date.now()+300000;
-            } else if((updatedTicket.status === 'Resolved' || updatedTicket.status === 'Cancelled') && (req.body.status != 'Resolved' || req.body.status != 'Cancelled')) {
+            if (req.body.status === 'Resolved' || req.body.status === 'Cancelled') {
+                updatedTicket.closeAt = Date.now() + 300000;
+            } else if ((updatedTicket.status === 'Resolved' || updatedTicket.status === 'Cancelled') && (req.body.status != 'Resolved' || req.body.status != 'Cancelled')) {
                 updatedTicket.closeAt = null;
             }
             updatedTicket.save();

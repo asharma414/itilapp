@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store';
 import TicketList from './components/ticketlist';
@@ -9,7 +9,7 @@ import Login from './components/auth/login';
 import NewTicket from './components/newticket';
 import ActivatedScreen from './components/activatedscreen';
 import TicketPage from './components/ticketpage';
-import PrivateRoute  from './components/protected-route/privateroute';
+import PrivateRoute from './components/protected-route/privateroute';
 import Page404 from './components/page404';
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
@@ -26,7 +26,7 @@ if (localStorage.jwtToken) {
   const decoded = jwt_decode(token);
   // Set user and isAuthenticated
   store.dispatch(setCurrentUser(decoded));
-// Check for expired token
+  // Check for expired token
   const currentTime = Date.now() / 1000; // to get in milliseconds
   if (decoded.exp < currentTime) {
     // Logout user
@@ -40,10 +40,10 @@ export default class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-      <div className='container'>
-        <Router>
-          <Navigation />
-          <Switch>
+        <div className='container'>
+          <Router>
+            <Navigation />
+            <Switch>
               <Route path='/' exact component={Login} />
               <Route path='/login' exact component={Login} />
               <Route path='/register' exact component={Register} />
@@ -53,10 +53,10 @@ export default class App extends React.Component {
               <PrivateRoute exact path='/mytickets' component={TicketList} />
               <PrivateRoute exact path='/new' component={NewTicket} />
               <Route component={Page404} />
-          </Switch>
-        </Router>
-      </div>
-    </Provider>
+            </Switch>
+          </Router>
+        </div>
+      </Provider>
     )
   }
 }

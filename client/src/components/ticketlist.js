@@ -11,8 +11,10 @@ import moment from 'moment';
 class TicketList extends Component {
 
     state = {
+        sortedTickets: null,
         currentPage: 1,
-        ticketsPerPage: 10
+        ticketsPerPage: 10,
+        ascend: null
     }
 
     componentDidMount() {
@@ -27,9 +29,42 @@ class TicketList extends Component {
         this.setState({currentPage: pageNumber})
     }
 
+    sortTickets = (e) => {
+        document.querySelectorAll('.arrow').forEach(span => span.style.display = 'none')
+        if (this.state.ascend) {
+            let sorted = this.props.ticket.tickets.sort((a,b) => {
+                if (typeof a[`${e.target.id}`] === 'string') {
+                    return (b[`${e.target.id}`].localeCompare(a[`${e.target.id}`]))
+                } else if (e.target.id === 'assignedTo') {
+                    return (b.assignedTo.name.localeCompare(a.assignedTo.name))
+                } else if (e.target.id === 'author') {
+                    return (b.author.name.localeCompare(a.author.name))
+                } else if (e.target.id === 'open') {
+                    return (b.open ? 'open' : 'closed').localeCompare(a.open ? 'open' : 'closed')
+                }
+            })
+            e.target.children[1].style.display = ''
+            this.setState({sortedTickets: sorted, ascend: false })
+        } else {
+        let sorted = this.props.ticket.tickets.sort((a,b) => {
+            if (typeof a[`${e.target.id}`] === 'string') {
+                return (a[`${e.target.id}`].localeCompare(b[`${e.target.id}`]))
+            } else if (e.target.id === 'assignedTo') {
+                return (a.assignedTo.name.localeCompare(b.assignedTo.name))
+            } else if (e.target.id === 'author') {
+                return (a.author.name.localeCompare(b.author.name))
+            } else if (e.target.id === 'open') {
+                return (a.open ? 'open' : 'closed').localeCompare(b.open ? 'open' : 'closed')
+            }
+        })
+        e.target.children[0].style.display = ''
+        this.setState({sortedTickets: sorted, ascend: true })
+    }
+    }
+
     render() {
         const { page } = this.props.match.params;
-        const { tickets } = this.props.ticket;
+        let tickets = (this.state.sortedTickets ? this.state.sortedTickets : this.props.ticket.tickets)
         const limit = Math.ceil(tickets.length/this.state.ticketsPerPage);
         const { loading } = this.props.ticket;
         const indexOfLastTicket = this.state.currentPage * this.state.ticketsPerPage;
@@ -54,14 +89,14 @@ class TicketList extends Component {
                         <thead>
                             <tr>
                                 <th>Ticket #</th>
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th>Status</th>
-                                <th>State</th>
-                                <th>Author</th> 
-                                <th>Assigned To</th>
-                                <th>Created</th>
-                                <th>Last Modified</th>
+                                <th className='ticket' id='title' onClick={this.sortTickets}>Title<span className='arrow' style={{display: 'none'}}>↑</span><span className='arrow' style={{display: 'none'}}>↓</span></th>
+                                <th className='ticket' id='description' onClick={this.sortTickets}>Description<span className='arrow' style={{display: 'none'}}>↑</span><span className='arrow' style={{display: 'none'}}>↓</span></th>
+                                <th className='ticket' id='status' onClick={this.sortTickets}>Status<span className='arrow' style={{display: 'none'}}>↑</span><span className='arrow' style={{display: 'none'}}>↓</span></th>
+                                <th className='ticket' id='open' onClick={this.sortTickets}>State<span className='arrow' style={{display: 'none'}}>↓</span><span className='arrow' style={{display: 'none'}}>↑</span></th>
+                                <th className='ticket' id='author' onClick={this.sortTickets}>Author<span className='arrow' style={{display: 'none'}}>↑</span><span className='arrow' style={{display: 'none'}}>↓</span></th> 
+                                <th className='ticket' id='assignedTo' onClick={this.sortTickets}>Assigned To<span className='arrow' style={{display: 'none'}}>↑</span><span className='arrow' style={{display: 'none'}}>↓</span></th>
+                                <th className='ticket' id='createdAt' onClick={this.sortTickets}>Created<span className='arrow' style={{display: 'none'}}>↑</span><span className='arrow' style={{display: 'none'}}>↓</span></th>
+                                <th className='ticket' id='updatedAt' onClick={this.sortTickets}>Last Modified<span className='arrow' style={{display: 'none'}}>↑</span><span className='arrow' style={{display: 'none'}}>↓</span></th>
                             </tr>
                         </thead>
                         <tbody>
