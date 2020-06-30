@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Navbar, Nav, Form, Button } from 'react-bootstrap';
 import { logoutUser } from "../actions/authActions";
 import { getTickets } from '../actions/ticketActions';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 class Navigation extends Component {
@@ -46,8 +46,8 @@ class Navigation extends Component {
                     <Form.Control id='term' onChange={this.onChange} type="text" placeholder="Search" className='mr-sm-2' />
                     <Button type='submit' variant='outline-success'>Search</Button>
                     </Form>
-                    <Nav.Link className={ isAuthenticated === true ? '' : 'd-none' } href='/tickets'>Home</Nav.Link>
-                    <Nav.Link className={ isAuthenticated === true ? '' : 'd-none' } href='/new'>New Ticket</Nav.Link>
+                    <Link className={ isAuthenticated === true ? 'nav-link' : 'd-none' } to='/tickets'>Home</Link>
+                    <Link className={ isAuthenticated === true ? 'nav-link' : 'd-none' } to='/new'>New Ticket</Link>
                     <Nav.Link className={ isAuthenticated === true ? '' : 'd-none' } onClick={this.myTickets}>My Tickets</Nav.Link>
                     <Nav.Link className={ isAuthenticated === true ? '' : 'd-none' } onClick={this.onLogoutClick}>Logout</Nav.Link>
                     </Nav>
