@@ -102,7 +102,7 @@ class TicketPage extends Component {
         const { updates } = { ...this.state };
         const currentState = updates;
         const { id, value } = e.target;
-        if (id == 'commentText'){
+        if (id === 'commentText'){
             this.setState({ commentText: value })
         } else {
             currentState[id] = value;

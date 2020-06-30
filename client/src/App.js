@@ -17,13 +17,14 @@ import { setCurrentUser, logoutUser } from "./actions/authActions";
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
+var decoded
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
   // Set auth token header auth
   const token = localStorage.jwtToken;
   setAuthToken(token);
   // Decode token and get user info and exp
-  const decoded = jwt_decode(token);
+  decoded = jwt_decode(token);
   // Set user and isAuthenticated
   store.dispatch(setCurrentUser(decoded));
   // Check for expired token
@@ -50,7 +51,7 @@ export default class App extends React.Component {
               <Route path='/verify/:id' exact component={ActivatedScreen} />
               <PrivateRoute exact path='/tickets/:page?' component={TicketList} />
               <PrivateRoute exact path='/ticket/:id' component={TicketPage} />
-              <PrivateRoute exact path='/mytickets' component={TicketList} />
+              <PrivateRoute exact path='/mytickets' component={() => <TicketList user={decoded.name} />} />
               <PrivateRoute exact path='/new' component={NewTicket} />
               <Route component={Page404} />
             </Switch>

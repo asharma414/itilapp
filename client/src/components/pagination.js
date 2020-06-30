@@ -17,13 +17,13 @@ export default function Pagination({ ticketsPerPage, totalTickets, currentPage, 
         return (
             <nav>
                 <ul className='pagination'>
-                <li className={ currentPage === 1 ? 'd-none' : 'page-item' }><a onClick={() => navigate(--currentPage)} className='page-link'>Prev</a></li>
+                <li className={ currentPage === 1 ? 'd-none' : 'page-item' }><div onClick={() => navigate(--currentPage)} className='page-link ticket'>Prev</div></li>
                 {pageNumbers.map(number => (
                     <li key={number} className={ number === currentPage ? 'page-item active' : 'page-item'}>
-                        <a onClick={() => navigate(number)} className='page-link'>{number}</a>
+                        <div onClick={() => navigate(number)} className='page-link ticket'>{number}</div>
                     </li>
                 ))}
-                <li className={ currentPage === pageNumbers.length ? 'd-none' : 'page-item' }><a onClick={() => navigate(++currentPage)} className='page-link'>Next</a></li>
+                <li className={ currentPage === pageNumbers.length ? 'd-none' : 'page-item' }><div onClick={() => navigate(++currentPage)} className='page-link ticket'>Next</div></li>
                 </ul>
             </nav>
         )

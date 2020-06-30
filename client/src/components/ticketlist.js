@@ -18,7 +18,11 @@ class TicketList extends Component {
     }
 
     componentDidMount() {
-        this.props.getTickets('', '');
+        if (this.props.location.pathname === '/mytickets') {
+            this.props.getTickets('', this.props.user)
+        } else {
+            this.props.getTickets('', '');
+        }
     }
 
     showDetails = (path) => {
@@ -43,7 +47,7 @@ class TicketList extends Component {
                     return (b.open ? 'open' : 'closed').localeCompare(a.open ? 'open' : 'closed')
                 }
             })
-            e.target.children[1].style.display = ''
+            e.currentTarget.children[1].style.display = ''
             this.setState({sortedTickets: sorted, ascend: false })
         } else {
         let sorted = this.props.ticket.tickets.sort((a,b) => {
