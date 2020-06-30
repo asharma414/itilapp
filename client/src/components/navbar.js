@@ -17,6 +17,16 @@ class Navigation extends Component {
         const user = this.props.auth.user.name
         await this.props.history.push('/mytickets');
         this.props.getTickets('', user);
+        this.clearState();
+    }
+
+    renderHome = () => {
+        this.props.getTickets('', '')
+        this.clearState();
+    }
+
+    clearState = () => {
+        this.setState({term: ''})
     }
 
     onLogoutClick = e => {
@@ -31,7 +41,7 @@ class Navigation extends Component {
     onSubmit = async (e) => { 
         e.preventDefault();
         await this.props.history.push('/tickets/1');
-        this.props.getTickets(this.state.term, '')
+        this.props.getTickets(this.state.term, '');
     }
 
     render() {
@@ -42,14 +52,14 @@ class Navigation extends Component {
                 <Navbar.Toggle className={ isAuthenticated === true ? '' : 'd-none' } aria-controls='basic-navbar-nav' />
                 <Navbar.Collapse id='basic-navbar-nav'>
                     <Nav className='mr-auto'>
-                    <Form className={ isAuthenticated === true ? '' : 'd-none' } onSubmit={this.onSubmit} inline>
-                    <Form.Control id='term' onChange={this.onChange} type="text" placeholder="Search" className='mr-sm-2' />
-                    <Button type='submit' variant='outline-success'>Search</Button>
-                    </Form>
-                    <Link className={ isAuthenticated === true ? 'nav-link' : 'd-none' } to='/tickets'>Home</Link>
-                    <Link className={ isAuthenticated === true ? 'nav-link' : 'd-none' } to='/new'>New Ticket</Link>
-                    <Nav.Link className={ isAuthenticated === true ? '' : 'd-none' } onClick={this.myTickets}>My Tickets</Nav.Link>
-                    <Nav.Link className={ isAuthenticated === true ? '' : 'd-none' } onClick={this.onLogoutClick}>Logout</Nav.Link>
+                        <Form className={ isAuthenticated === true ? '' : 'd-none' } onSubmit={this.onSubmit} inline>
+                            <Form.Control id='term' value={this.state.term} onChange={this.onChange} type="text" placeholder="Search" className='mr-sm-2' />
+                            <Button type='submit' variant='outline-success'>Search</Button>
+                        </Form>
+                        <Link className={ isAuthenticated === true ? 'nav-link' : 'd-none' } onClick={this.renderHome} to='/tickets'>Home</Link>
+                        <Link className={ isAuthenticated === true ? 'nav-link' : 'd-none' } onClick={this.clearState} to='/new'>New Ticket</Link>
+                        <Nav.Link className={ isAuthenticated === true ? '' : 'd-none' } onClick={this.myTickets}>My Tickets</Nav.Link>
+                        <Nav.Link className={ isAuthenticated === true ? '' : 'd-none' } onClick={this.onLogoutClick}>Logout</Nav.Link>
                     </Nav>
                     <span className={this.props.auth.user.name ? 'navbar-text' : ''}>{this.props.auth.user.name ? this.props.auth.user.name : null}</span>
                 </Navbar.Collapse>
