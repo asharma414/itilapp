@@ -18,7 +18,7 @@ router.get('/', auth, async (req, res) => {
                     { 'author.name': { $regex: regex } },
                     { number: { $regex: regex } }
                 ]
-            }).populate('closed').exec((err, tickets) => {
+            }, (err, tickets) => {
                 if (tickets.length < 1) {
                     res.json([])
                 } else {
@@ -47,8 +47,7 @@ router.get('/', auth, async (req, res) => {
                     }
                     res.json(tickets);
                 }
-            }
-            )
+            })
         } catch (e) {
             console.log(e);
         }
@@ -106,7 +105,7 @@ router.put('/:id', auth, (req, res) => {
 });
 
 
-//function converts text into regex that can be used to fuzzy
+//function converts text into regex that can be used to fuzzy search
 function escapeRegex(text) {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 };

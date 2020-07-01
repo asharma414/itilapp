@@ -51,7 +51,7 @@ export default class App extends React.Component {
               <Route path='/verify/:id' exact component={ActivatedScreen} />
               <PrivateRoute exact path='/tickets/:page?' component={TicketList} />
               <PrivateRoute exact path='/ticket/:id' component={TicketPage} />
-              <PrivateRoute exact path='/mytickets' component={() => <TicketList user={decoded.name} />} />
+              <PrivateRoute exact path='/mytickets' render={() => <TicketList user={decoded.name} />} />
               <PrivateRoute exact path='/new' component={NewTicket} />
               <Route component={Page404} />
             </Switch>

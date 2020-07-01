@@ -25,7 +25,7 @@ class TicketPage extends Component {
             customerName: '',
             customerContact: '',
             author: '',
-            comments:  [],
+            comments: [],
             assignedTo: '',
             number: ''
         },
@@ -39,7 +39,7 @@ class TicketPage extends Component {
             customerName: '',
             customerContact: '',
             author: '',
-            comments:  [],
+            comments: [],
             assignedTo: '',
             number: ''
         },
@@ -51,7 +51,7 @@ class TicketPage extends Component {
         const { id } = this.props.match.params;
         axios
             .get(`/api/tickets/${id}`)
-            .then(res => 
+            .then(res =>
                 this.setState({
                     updates: {
                         title: res.data.title,
@@ -84,9 +84,9 @@ class TicketPage extends Component {
                     loading: false
                 })
             )
-            .catch(err => 
+            .catch(err =>
                 this.props.history.push('/')
-        );
+            );
     }
 
     componentDidMount() {
@@ -102,7 +102,7 @@ class TicketPage extends Component {
         const { updates } = { ...this.state };
         const currentState = updates;
         const { id, value } = e.target;
-        if (id === 'commentText'){
+        if (id === 'commentText') {
             this.setState({ commentText: value })
         } else {
             currentState[id] = value;
@@ -111,20 +111,20 @@ class TicketPage extends Component {
     }
 
     commentPost = async (text) => {
-        if(text.length > 0){
-        const { id } = this.props.match.params;
-        const userId = this.props.auth.user.id;
-        const username = this.props.auth.user.name;
-        const newComment = {
-            text: text,
-            author: {
-                id: userId,
-                name: username
+        if (text.length > 0) {
+            const { id } = this.props.match.params;
+            const userId = this.props.auth.user.id;
+            const username = this.props.auth.user.name;
+            const newComment = {
+                text: text,
+                author: {
+                    id: userId,
+                    name: username
+                }
             }
+            await this.props.addComment(id, newComment);
+            window.location.reload();
         }
-        await this.props.addComment(id, newComment);
-        window.location.reload();
-    }
     }
 
     arrayMatch = (original, updates) => {
@@ -144,7 +144,7 @@ class TicketPage extends Component {
         if (!this.arrayMatch(Object.values(this.state.updates), Object.values(this.state.original))) {
             const { users } = this.props.user;
             let userArr = users.map(user => user.name);
-            if (userArr.includes(this.state.updates.assignedTo)){
+            if (userArr.includes(this.state.updates.assignedTo)) {
                 let assignedToIndex = userArr.indexOf(this.state.updates.assignedTo)
                 const { id } = this.props.match.params;
                 if (this.state.updates.status !== this.state.original.status) {
@@ -167,7 +167,7 @@ class TicketPage extends Component {
                 alert('Invalid assigned to user')
             }
             window.location.reload();
-    }
+        }
     }
 
     commentSubmit = (e) => {
@@ -191,12 +191,12 @@ class TicketPage extends Component {
         } else {
             return (
                 <div className='container'>
-                <datalist id='datalist1'>
-                {
-                    users.map(user => (
-                        <option key={user._id} value={user.name}></option>
-                ))}
-                </datalist>
+                    <datalist id='datalist1'>
+                        {
+                            users.map(user => (
+                                <option key={user._id} value={user.name}></option>
+                            ))}
+                    </datalist>
                     <Table className='my-4' bordered hover responsive='md'>
                         <thead>
                             <tr>
@@ -204,7 +204,7 @@ class TicketPage extends Component {
                                 <td>Title</td>
                                 <td>Status</td>
                                 <td>State</td>
-                                <td>Author</td> 
+                                <td>Author</td>
                                 <td>Created</td>
                                 <td>Last Modified</td>
                             </tr>
@@ -252,7 +252,7 @@ class TicketPage extends Component {
                         </Row>
                         <Form.Group controlId='assignedTo'>
                             <Form.Label>Assigned To</Form.Label>
-                            <Form.Control  list='datalist1' type='text' value={this.state.updates.assignedTo} onChange={this.onChange} required placeholder='Assign ticket to user' disabled={this.isClosed()} />
+                            <Form.Control list='datalist1' type='text' value={this.state.updates.assignedTo} onChange={this.onChange} required placeholder='Assign ticket to user' disabled={this.isClosed()} />
                         </Form.Group>
                         <Form.Group controlId='description'>
                             <Form.Label>Description</Form.Label>
@@ -262,27 +262,27 @@ class TicketPage extends Component {
                     </Form>
                     <div className='my-4 commentForm'>
                         <Form onSubmit={this.commentSubmit}>
-                        <Form.Group controlId='commentText'>
-                            <Form.Label>New Comment</Form.Label>
-                            <Form.Control as='textarea' value={this.state.commentText} onChange={this.onChange} placeholder="Enter comments"  disabled={this.isClosed()} />
-                        </Form.Group>
-                        <Button variant='outline-secondary' type='submit' disabled={this.isClosed()}>Post Comment</Button>
+                            <Form.Group controlId='commentText'>
+                                <Form.Label>New Comment</Form.Label>
+                                <Form.Control as='textarea' value={this.state.commentText} onChange={this.onChange} placeholder="Enter comments" disabled={this.isClosed()} />
+                            </Form.Group>
+                            <Button variant='outline-secondary' type='submit' disabled={this.isClosed()}>Post Comment</Button>
                         </Form>
                     </div>
-                        {this.state.updates.comments.map(comment =>
-                            <div key={comment._id} className='mt-3 card-footer'> 
-                                <div className='row'>
-                                        <div className='col-md-12'>
-                                            <div className='row'>
-                                                <div className='col-md-9'><strong>{comment.author.name}</strong></div>
-                                                <div className='text-right col-md-3'>{moment(comment.createdAt).fromNow()}</div>
-                                            </div>
-                                            <p dangerouslySetInnerHTML={{__html: sanitizer(comment.text)}}></p>
+                    {this.state.updates.comments.map(comment =>
+                        <div key={comment._id} className='mt-3 card-footer'>
+                            <div className='row'>
+                                <div className='col-md-12'>
+                                    <div className='row'>
+                                        <div className='col-md-9'><strong>{comment.author.name}</strong></div>
+                                        <div className='text-right col-md-3'>{moment(comment.createdAt).fromNow()}</div>
                                     </div>
+                                    <p dangerouslySetInnerHTML={{ __html: sanitizer(comment.text) }}></p>
                                 </div>
                             </div>
-                        )}
-                    </div>
+                        </div>
+                    )}
+                </div>
             )
         }
     }

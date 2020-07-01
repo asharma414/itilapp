@@ -108,7 +108,7 @@ class TicketList extends Component {
                             <tr className='ticket' key={ticket._id} onClick={() => this.showDetails(`/ticket/${ticket._id}`)}>
                                     <td>{ticket.number}</td>
                                     <td>{ticket.title}</td>
-                                    <td>{ticket.description.substring(0, 25)}</td>
+                                    <td>{ticket.description.length > 25 ? ticket.description.substring(0, 25) : ticket.description}</td>
                                     <td>{ticket.status}</td>
                                     <td>{ticket.open ? 'Open' : 'Closed'}</td>
                                     <td>{ticket.author.name}</td>
