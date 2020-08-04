@@ -18,9 +18,7 @@ class TicketList extends Component {
     }
 
     componentDidMount() {
-        if (this.props.location.pathname === '/mytickets') {
-            this.props.getTickets('', this.props.user)
-        } else {
+        if (this.props.ticket.tickets.length === 0) {
             this.props.getTickets('', '');
         }
     }
@@ -50,17 +48,17 @@ class TicketList extends Component {
             e.currentTarget.children[1].style.display = ''
             this.setState({sortedTickets: sorted, ascend: false })
         } else {
-        let sorted = this.props.ticket.tickets.sort((a,b) => {
-            if (typeof a[`${e.target.id}`] === 'string') {
-                return (a[`${e.target.id}`].localeCompare(b[`${e.target.id}`]))
-            } else if (e.target.id === 'assignedTo') {
-                return (a.assignedTo.name.localeCompare(b.assignedTo.name))
-            } else if (e.target.id === 'author') {
-                return (a.author.name.localeCompare(b.author.name))
-            } else if (e.target.id === 'open') {
-                return (a.open ? 'open' : 'closed').localeCompare(b.open ? 'open' : 'closed')
-            }
-        })
+            let sorted = this.props.ticket.tickets.sort((a,b) => {
+                if (typeof a[`${e.target.id}`] === 'string') {
+                    return (a[`${e.target.id}`].localeCompare(b[`${e.target.id}`]))
+                } else if (e.target.id === 'assignedTo') {
+                    return (a.assignedTo.name.localeCompare(b.assignedTo.name))
+                } else if (e.target.id === 'author') {
+                    return (a.author.name.localeCompare(b.author.name))
+                } else if (e.target.id === 'open') {
+                    return (a.open ? 'open' : 'closed').localeCompare(b.open ? 'open' : 'closed')
+                }
+            })
         e.target.children[0].style.display = ''
         this.setState({sortedTickets: sorted, ascend: true })
     }

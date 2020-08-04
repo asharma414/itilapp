@@ -12,15 +12,14 @@ class Navigation extends Component {
         term: '',
     }
 
-    myTickets = async (e) => {
-        e.preventDefault();
+    myTickets = async () => {
         const user = this.props.auth.user.name
         await this.props.getTickets('', user);
         this.clearState();
     }
 
-    renderHome = () => {
-        this.props.getTickets('', '')
+    renderHome = async () => {
+        await this.props.getTickets('', '')
         this.clearState();
     }
 
@@ -57,7 +56,7 @@ class Navigation extends Component {
                         </Form>
                         <Link className={ isAuthenticated === true ? 'nav-link' : 'd-none' } onClick={this.renderHome} to='/tickets'>Home</Link>
                         <Link className={ isAuthenticated === true ? 'nav-link' : 'd-none' } onClick={this.clearState} to='/new'>New Ticket</Link>
-                        <Link className={ isAuthenticated === true ? 'nav-link' : 'd-none' } to='/mytickets' onClick={this.myTickets}>My Tickets</Link>
+                        <Link className={ isAuthenticated === true ? 'nav-link' : 'd-none' } onClick={this.myTickets}  to='/tickets'>My Tickets</Link>
                         <Nav.Link className={ isAuthenticated === true ? '' : 'd-none' } onClick={this.onLogoutClick}>Logout</Nav.Link>
                     </Nav>
                     <span className={this.props.auth.user.name ? 'navbar-text' : ''}>{this.props.auth.user.name ? this.props.auth.user.name : null}</span>
