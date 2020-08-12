@@ -16,6 +16,7 @@ router.post('/', auth, (req,res) => {
                     //save comment
                     ticket.comments.push(comment);
                     ticket.save();
+                    res.json(comment)
                 }
             });
         }

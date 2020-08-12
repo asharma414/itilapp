@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { updateTicket } from '../actions/ticketActions';
 import { returnErrors } from '../actions/errorActions';
-import { addComment } from '../actions/commentActions';
 import { findUser } from '../actions/userActions';
 import PropTypes from 'prop-types';
 import LoadingScreen from './loadingscreen';
@@ -43,6 +42,7 @@ class TicketPage extends Component {
             assignedTo: '',
             number: ''
         },
+        comments: [],
         loading: false,
         errors: {}
     }
@@ -63,7 +63,6 @@ class TicketPage extends Component {
                         number: res.data.number,
                         customerName: ((res.data || {}).customer || {}).name,
                         customerContact: ((res.data || {}).customer || {}).contact,
-                        comments: res.data.comments,
                         author: ((res.data || {}).author || {}).name,
                         assignedTo: ((res.data || {}).assignedTo || {}).name
                     },
@@ -77,10 +76,10 @@ class TicketPage extends Component {
                         description: res.data.description,
                         customerName: ((res.data || {}).customer || {}).name,
                         customerContact: ((res.data || {}).customer || {}).contact,
-                        comments: res.data.comments,
                         author: ((res.data || {}).author || {}).name,
                         assignedTo: ((res.data || {}).assignedTo || {}).name,
                     },
+                    comments: res.data.comments,
                     loading: false
                 })
             )
@@ -110,29 +109,31 @@ class TicketPage extends Component {
         }
     }
 
-    commentPost = async (text) => {
-        if (text.length > 0) {
-            const { id } = this.props.match.params;
-            const userId = this.props.auth.user.id;
-            const username = this.props.auth.user.name;
-            const newComment = {
-                text: text,
-                author: {
-                    id: userId,
-                    name: username
-                }
+    commentPost = (text) => {
+        const { id } = this.props.match.params;
+        const userId = this.props.auth.user.id;
+        const username = this.props.auth.user.name;
+        const newComment = {
+            text: text,
+            author: {
+                id: userId,
+                name: username
             }
-            await this.props.addComment(id, newComment);
-            window.location.reload();
         }
+        axios
+            .post(`/api/tickets/${id}/comments`, newComment)
+            .then(res => this.setState({comments: [res.data, ...this.state.comments], commentText: ''}))
+            .catch(err =>
+                console.log(err)
+            );
     }
 
-    arrayMatch = (original, updates) => {
-        if (original.length !== updates.length) {
+    stateMatch = (original, updates) => {
+        if (Object.keys(original).length !== Object.keys(updates).length) {
             return false;
         }
-        for (let i = 0; i < original.length; i++) {
-            if (original[i] !== updates[i]) {
+        for (const property in original) {
+            if (original[property] !== updates[property]) {
                 return false;
             }
         }
@@ -141,7 +142,7 @@ class TicketPage extends Component {
 
     ticketSubmit = async (e) => {
         e.preventDefault();
-        if (!this.arrayMatch(Object.values(this.state.updates), Object.values(this.state.original))) {
+        if (!this.stateMatch(this.state.original, this.state.updates)) {
             const { users } = this.props.user;
             let userArr = users.map(user => user.name);
             if (userArr.includes(this.state.updates.assignedTo)) {
@@ -172,7 +173,9 @@ class TicketPage extends Component {
 
     commentSubmit = (e) => {
         e.preventDefault();
-        this.commentPost(this.state.commentText)
+        if (this.state.commentText.length > 0) {
+            this.commentPost(this.state.commentText)
+        }
     }
 
     isClosed = () => {
@@ -269,7 +272,7 @@ class TicketPage extends Component {
                             <Button variant='outline-secondary' type='submit' disabled={this.isClosed()}>Post Comment</Button>
                         </Form>
                     </div>
-                    {this.state.updates.comments.map(comment =>
+                    {this.state.comments.map(comment =>
                         <div key={comment._id} className='mt-3 card-footer'>
                             <div className='row'>
                                 <div className='col-md-12'>
@@ -290,7 +293,6 @@ class TicketPage extends Component {
 
 TicketPage.propTypes = {
     updateTicket: PropTypes.func.isRequired,
-    addComment: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
     findUser: PropTypes.func.isRequired,
@@ -303,4 +305,4 @@ const mapStateToProps = (state) => ({
     user: state.user
 });
 
-export default connect(mapStateToProps, { returnErrors, updateTicket, addComment, findUser })(TicketPage)
+export default connect(mapStateToProps, { returnErrors, updateTicket, findUser })(TicketPage)
