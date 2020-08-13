@@ -19,7 +19,8 @@ export default function(state = initialState, action) {
             };
         case ADD_TICKET:
             return {
-                ...state
+                ...state,
+                tickets: [action.payload, ...state.tickets]
             };
         case TICKETS_LOADING:
             return {

@@ -28,12 +28,13 @@ export const newTicket = ticket => dispatch => {
         .post('/api/tickets/create', ticket)
         .then(res => 
             dispatch({
-                type: ADD_TICKET
+                type: ADD_TICKET,
+                payload: res.data
             })
         )
         .catch(err => 
             dispatch(returnErrors(err.response.data, err.response.status))
-        );
+        )
 };
 
 export const updateTicket = (id, data) => dispatch  => {

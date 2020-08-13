@@ -11,14 +11,14 @@ router.get('/', auth, async (req, res) => {
     if (req.query.name.length === 0) {
         const regex = new RegExp(escapeRegex(req.query.term), 'gi');
         try {
-            let tickets = await Ticket.find({
+            await Ticket.find({
                 $or: [
                     { title: { $regex: regex } },
                     { description: { $regex: regex } },
                     { 'author.name': { $regex: regex } },
                     { number: { $regex: regex } }
                 ]
-            }, (err, tickets) => {
+            }, null, {sort: '-createdAt'}, (err, tickets) => {
                 if (tickets.length < 1) {
                     res.json([])
                 } else {
@@ -55,7 +55,7 @@ router.get('/', auth, async (req, res) => {
         try {
             let tickets = await Ticket.find({
                 "assignedTo.name": req.query.name
-            })
+            }).sort('-createdAt')
             res.json(tickets)
         } catch (e) {
             console.log(e);
@@ -72,7 +72,7 @@ router.post('/create', auth, async (req, res) => {
         const newTicket = new Ticket(data);
         try {
             await newTicket.save();
-            res.json('ticket added');
+            res.json(newTicket);
             retry = false;
         } catch (e) {
             console.log(e);
