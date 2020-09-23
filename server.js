@@ -5,7 +5,7 @@ const cors = require('cors');
 const app = express();
 let db;
 if (process.env.NODE_ENV === 'production') {
-    db = process.env.prodMongURI;
+    db = process.env.prodMongoURI;
 } else {
     db = process.env.devMongoURI;
 }
