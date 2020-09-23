@@ -3,7 +3,13 @@ const mongoose = require('mongoose');
 const config = require('dotenv').config()
 const cors = require('cors');
 const app = express();
-const db = process.env.mongoURI;
+let db;
+if (process.env.NODE_ENV === 'production') {
+    db = process.env.prodMongURI;
+} else {
+    db = process.env.devMongoURI;
+}
+
 const port = process.env.PORT || 5000;
 const passport = require('passport');
 const userRoutes = require('./routes/users');

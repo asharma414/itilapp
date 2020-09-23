@@ -2,11 +2,30 @@ const router = require('express').Router();
 const Ticket = require('../models/ticket.model');
 const Comment = require('../models/comment.model');
 const auth = require('../middleware/auth');
+const mongoose = require('mongoose')
 
 
 //get ticket list
 
 router.get('/', auth, async (req, res) => {
+    // close out resolved/cancelled tickets after 3 days of inactivity
+    await Ticket.find({status: {$in: ['Resolved', 'Cancelled']}, closeAt: {$lte: new Date()}})
+        .then(async (tickets) => {
+            for (let i = 0; i < tickets.length; i++) {
+                await Comment.create({ text: 'State is <i>Closed</i> was <i>Open</i>', author: { name: 'System' }})
+                .then(comment => {
+                    comment.createdAt = tickets[i].closeAt;
+                    comment.save();
+                    tickets[i].comments.push(comment);
+                    tickets[i].open = false;
+                    tickets[i].updatedAt = tickets[i].closeAt
+                    tickets[i].closeAt = null;
+                    tickets[i].save();
+                })
+                .catch(err => console.log('Ticket closing error'))
+                }
+        })
+        .catch(err => console.log('Ticket finding error'))
     //check if finding users tickets or searching by keyword
     if (req.query.name.length === 0) {
         const regex = new RegExp(escapeRegex(req.query.term), 'gi');
@@ -22,29 +41,6 @@ router.get('/', auth, async (req, res) => {
                 if (tickets.length < 1) {
                     res.json([])
                 } else {
-                    for (let i = 0; i < tickets.length; i++) {
-                        if (tickets[i].closeAt != null && Date.now() > tickets[i].closeAt) {
-                            Ticket.findOneAndUpdate({ _id: tickets[i]._id }, { open: false }, (err, result) => {
-                                if (err) {
-                                    res.status(404).json({ msg: 'Ticket not found' })
-                                } else {
-                                    Comment.create({ text: 'State is <i>Closed</i> was <i>Open</i>', author: { name: 'System' } }, (err, comment) => {
-                                        if (err) {
-                                            res.status(500).json({ msg: 'Server error' })
-                                        } else {
-                                            comment.createdAt = result.closeAt;
-                                            comment.save();
-                                            //save comment
-                                            result.comments.push(comment);
-                                            result.updatedAt = result.closeAt
-                                            result.closeAt = null;
-                                            result.save();
-                                        }
-                                    })
-                                }
-                            })
-                        }
-                    }
                     res.json(tickets);
                 }
             })
@@ -94,7 +90,7 @@ router.put('/:id', auth, (req, res) => {
             res.status(404).json({ success: false })
         } else {
             if (req.body.status === 'Resolved' || req.body.status === 'Cancelled') {
-                updatedTicket.closeAt = Date.now() + 300000;
+                updatedTicket.closeAt = Date.now() + 259200000;
             } else if ((updatedTicket.status === 'Resolved' || updatedTicket.status === 'Cancelled') && (req.body.status != 'Resolved' || req.body.status != 'Cancelled')) {
                 updatedTicket.closeAt = null;
             }
